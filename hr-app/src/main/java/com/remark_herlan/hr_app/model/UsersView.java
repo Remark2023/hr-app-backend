@@ -19,7 +19,7 @@ public class UsersView {
 	private String username;
 	private String password;
 	private String status;
-	private String user_role;
+	private String userRole;
 
 	public Long getUserId() {
 		return userId;
@@ -53,12 +53,12 @@ public class UsersView {
 		this.status = status;
 	}
 
-	public String getUser_role() {
-		return user_role;
+	public String getUserRole() {
+		return userRole;
 	}
 
-	public void setUser_role(String user_role) {
-		this.user_role = user_role;
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
 	}
 
 }

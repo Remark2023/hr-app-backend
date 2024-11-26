@@ -68,11 +68,11 @@ public class UsersViewService {
 		return null;
 	}
 
-	public ResponseInfo<Optional<UsersView>> getInfoByUsername(String username) {
-		ResponseInfo<Optional<UsersView>> responseInfo = new ResponseInfo<>();
+	public ResponseInfo<UsersView> getInfoByUsername(String username) {
+		ResponseInfo<UsersView> responseInfo = new ResponseInfo<>();
 
 		try {
-			Optional<UsersView> response = dao.findByUsername(username);
+			UsersView response = dao.findByUsername(username);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully fetched!");
@@ -85,7 +85,7 @@ public class UsersViewService {
 
 		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
 		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(Optional.empty());
+		responseInfo.setData(null);
 
 		return null;
 	}

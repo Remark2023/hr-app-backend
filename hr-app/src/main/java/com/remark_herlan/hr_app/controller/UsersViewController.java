@@ -37,7 +37,7 @@ public class UsersViewController {
 	}
 
 	@GetMapping("/byUsername/{username}")
-	public ResponseInfo<Optional<UsersView>> getByNameMethod(@PathVariable String username) {
+	public ResponseInfo<UsersView> getByNameMethod(@PathVariable String username) {
 		return service.getInfoByUsername(username);
 	}
 

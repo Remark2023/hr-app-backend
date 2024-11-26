@@ -46,7 +46,6 @@ public class UsersController {
 
 	@PostMapping("/add")
 	public ResponseInfo<String> postMethod(@Validated @RequestBody Users user) {
-		System.out.println(user);
 		return service.saveInfo(user);
 	}
 
