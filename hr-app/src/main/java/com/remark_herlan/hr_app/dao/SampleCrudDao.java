@@ -13,7 +13,8 @@ import com.remark_herlan.hr_app.model.SampleCrud;
 
 /**
  * author: Naimul Hassan
- * date: 11/26/2024
+ * 
+ * date: 11/28/2024
  */
 /**
  * this is the dao for sample_crud table this is an interface that inherit
