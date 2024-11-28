@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +44,8 @@ public class AuthenticationController {
 	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
 	@PostMapping("/login")
-	public ResponseInfo<String> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
+	public ResponseInfo<String> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest)
+			throws UsernameNotFoundException {
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 
