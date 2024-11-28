@@ -22,7 +22,7 @@ import com.remark_herlan.hr_app.service.UsersViewService;
  */
 
 @RestController
-@RequestMapping("users-view")
+@RequestMapping("api/jwt/users-view")
 public class UsersViewController {
 
 	@Autowired

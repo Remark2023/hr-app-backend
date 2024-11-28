@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,14 +26,16 @@ import com.remark_herlan.hr_app.service.UsersService;
  */
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("api/jwt/users")
 public class UsersController {
 
 	@Autowired
 	UsersService service;
 
 	@GetMapping("all")
-	public ResponseInfo<List<Users>> getAllMethod() throws DataNotFoundException, InternalServerException {
+	public ResponseInfo<List<Users>> getAllMethod(@RequestAttribute("username") String username,
+			@RequestAttribute("role") String role) throws DataNotFoundException, InternalServerException {
+		System.out.println(username + " " + role);
 		return service.getAllInfos();
 	}
 

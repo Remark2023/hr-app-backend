@@ -89,11 +89,11 @@ public class ApplicationExceptionHandler {
 
 		ResponseInfo<Map<String, String>> responseInfo = new ResponseInfo<>();
 
-		responseInfo.setStatusCode(HttpStatus.NO_CONTENT.value());
-		responseInfo.setMessage(HttpStatus.NO_CONTENT.name());
+		responseInfo.setStatusCode(HttpStatus.NOT_FOUND.value());
+		responseInfo.setMessage(HttpStatus.NOT_FOUND.name());
 		responseInfo.setData(errorMap);
 
-		return new ResponseEntity<>(responseInfo, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(responseInfo, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(InternalServerException.class)

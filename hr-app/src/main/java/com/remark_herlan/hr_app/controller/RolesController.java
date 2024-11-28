@@ -25,16 +25,14 @@ import com.remark_herlan.hr_app.service.RolesService;
  */
 
 @RestController
-@RequestMapping("/api/jwt/roles")
+@RequestMapping("/api/roles")
 public class RolesController {
 
 	@Autowired
 	RolesService service;
 
 	@GetMapping("all")
-	public ResponseInfo<List<Roles>> getAllMethod(@RequestAttribute("username") String username,
-			@RequestAttribute("role") String role) throws InternalServerException, DataNotFoundException {
-		System.out.println(username + role);
+	public ResponseInfo<List<Roles>> getAllMethod() throws InternalServerException, DataNotFoundException {
 		return service.getAllInfos();
 	}
 

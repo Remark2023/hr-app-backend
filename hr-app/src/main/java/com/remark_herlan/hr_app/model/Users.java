@@ -1,5 +1,7 @@
 package com.remark_herlan.hr_app.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -18,6 +20,9 @@ public class Users {
 	private String password;
 	private String status;
 	private int roleId;
+	private LocalDateTime creationDate;
+	private LocalDateTime activeDate;
+	private LocalDateTime inactiveDate;
 
 	public int getId() {
 		return id;
@@ -57,6 +62,30 @@ public class Users {
 
 	public void setRoleId(int roleId) {
 		this.roleId = roleId;
+	}
+
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public LocalDateTime getActiveDate() {
+		return activeDate;
+	}
+
+	public void setActiveDate(LocalDateTime activeDate) {
+		this.activeDate = activeDate;
+	}
+
+	public LocalDateTime getInactiveDate() {
+		return inactiveDate;
+	}
+
+	public void setInactiveDate(LocalDateTime inactiveDate) {
+		this.inactiveDate = inactiveDate;
 	}
 
 }
