@@ -1,6 +1,5 @@
 package com.remark_herlan.hr_app.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.remark_herlan.hr_app.dao.RolesDao;
+import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
+import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 import com.remark_herlan.hr_app.model.Roles;
 
@@ -24,55 +25,59 @@ public class RolesService {
 	@Autowired
 	RolesDao dao;
 
-	public ResponseInfo<List<Roles>> getAllInfos() {
+	public ResponseInfo<List<Roles>> getAllInfos() throws InternalServerException, DataNotFoundException {
 		ResponseInfo<List<Roles>> responseInfo = new ResponseInfo<>();
 
 		try {
 			List<Roles> response = dao.findAll();
 
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully fetched!");
 			responseInfo.setData(response);
 
 			return responseInfo;
+		} catch (DataNotFoundException e) {
+			// Explicitly handle known exception
+			throw e; // Re-throw to let a higher-level handler manage it
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
 
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(new ArrayList<>());
-
-		return null;
 	}
 
-	public ResponseInfo<Optional<Roles>> getInfo(Integer id) {
+	public ResponseInfo<Optional<Roles>> getInfo(Integer id) throws InternalServerException, DataNotFoundException {
 		ResponseInfo<Optional<Roles>> responseInfo = new ResponseInfo<>();
 
 		try {
 			Optional<Roles> response = dao.findById(id);
 
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully fetched!");
 			responseInfo.setData(response);
 
 			return responseInfo;
+		} catch (DataNotFoundException e) {
+			// Explicitly handle known exception
+			throw e; // Re-throw to let a higher-level handler manage it
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
 
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(Optional.empty());
-
-		return null;
 	}
 
-	public ResponseInfo<String> saveInfo(Roles Roles) {
+	public ResponseInfo<String> saveInfo(Roles role) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
-			dao.save(Roles);
+			dao.save(role);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully added!");
@@ -80,17 +85,11 @@ public class RolesService {
 
 			return responseInfo;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
-
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(HttpStatus.BAD_REQUEST.name());
-
-		return null;
 	}
 
-	public ResponseInfo<String> deleteInfo(Integer id) {
+	public ResponseInfo<String> deleteInfo(Integer id) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
@@ -102,17 +101,12 @@ public class RolesService {
 
 			return responseInfo;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
 
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(HttpStatus.BAD_REQUEST.name());
-
-		return null;
 	}
 
-	public ResponseInfo<String> deleteAllInfos() {
+	public ResponseInfo<String> deleteAllInfos() throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
@@ -124,14 +118,9 @@ public class RolesService {
 
 			return responseInfo;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
 
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(HttpStatus.BAD_REQUEST.name());
-
-		return null;
 	}
 
 }

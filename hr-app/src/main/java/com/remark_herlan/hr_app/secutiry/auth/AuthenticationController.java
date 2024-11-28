@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 import com.remark_herlan.hr_app.model.Users;
 import com.remark_herlan.hr_app.secutiry.auth.jwt.JwtTokenUtil;
@@ -59,7 +60,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/signup")
-	public ResponseInfo<String> registerUser(@RequestBody Users user) {
+	public ResponseInfo<String> registerUser(@RequestBody Users user) throws InternalServerException {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
 		return usersService.saveInfo(user);

@@ -1,6 +1,5 @@
 package com.remark_herlan.hr_app.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.remark_herlan.hr_app.dao.UsersDao;
+import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
+import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 import com.remark_herlan.hr_app.model.Users;
 
@@ -24,73 +25,76 @@ public class UsersService {
 	@Autowired
 	UsersDao dao;
 
-	public ResponseInfo<List<Users>> getAllInfos() {
+	public ResponseInfo<List<Users>> getAllInfos() throws DataNotFoundException, InternalServerException {
 		ResponseInfo<List<Users>> responseInfo = new ResponseInfo<>();
 
 		try {
 			List<Users> response = dao.findAll();
 
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully fetched!");
 			responseInfo.setData(response);
 
 			return responseInfo;
+		} catch (DataNotFoundException e) {
+			// Explicitly handle known exception
+			throw e; // Re-throw to let a higher-level handler manage it
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
-
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(new ArrayList<>());
-
-		return null;
 	}
 
-	public ResponseInfo<Optional<Users>> getInfo(Integer id) {
+	public ResponseInfo<Optional<Users>> getInfo(Integer id) throws DataNotFoundException, InternalServerException {
 		ResponseInfo<Optional<Users>> responseInfo = new ResponseInfo<>();
 
 		try {
 			Optional<Users> response = dao.findById(id);
 
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully fetched!");
 			responseInfo.setData(response);
 
 			return responseInfo;
+		} catch (DataNotFoundException e) {
+			// Explicitly handle known exception
+			throw e; // Re-throw to let a higher-level handler manage it
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
-
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(Optional.empty());
-
-		return null;
 	}
 
-	public ResponseInfo<Optional<Users>> getInfoByUsername(String username) {
+	public ResponseInfo<Optional<Users>> getInfoByUsername(String username) throws DataNotFoundException, InternalServerException {
 		ResponseInfo<Optional<Users>> responseInfo = new ResponseInfo<>();
 
 		try {
 			Optional<Users> response = dao.findByUsername(username);
 
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully fetched!");
 			responseInfo.setData(response);
 
 			return responseInfo;
+		} catch (DataNotFoundException e) {
+			// Explicitly handle known exception
+			throw e; // Re-throw to let a higher-level handler manage it
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
-
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(Optional.empty());
-
-		return null;
 	}
 
-	public ResponseInfo<String> saveInfo(Users user) {
+	public ResponseInfo<String> saveInfo(Users user) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
@@ -102,17 +106,11 @@ public class UsersService {
 
 			return responseInfo;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
-
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(HttpStatus.BAD_REQUEST.name());
-
-		return null;
 	}
 
-	public ResponseInfo<String> deleteInfo(Integer id) {
+	public ResponseInfo<String> deleteInfo(Integer id) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
@@ -124,17 +122,11 @@ public class UsersService {
 
 			return responseInfo;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
-
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(HttpStatus.BAD_REQUEST.name());
-
-		return null;
 	}
 
-	public ResponseInfo<String> deleteAllInfos() {
+	public ResponseInfo<String> deleteAllInfos() throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
@@ -146,14 +138,8 @@ public class UsersService {
 
 			return responseInfo;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new InternalServerException(e.getMessage());
 		}
-
-		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		responseInfo.setMessage("BAD REQUEST");
-		responseInfo.setData(HttpStatus.BAD_REQUEST.name());
-
-		return null;
 	}
 
 }

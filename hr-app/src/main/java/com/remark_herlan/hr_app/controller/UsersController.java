@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
+import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 import com.remark_herlan.hr_app.model.Users;
 import com.remark_herlan.hr_app.service.UsersService;
@@ -30,22 +32,24 @@ public class UsersController {
 	UsersService service;
 
 	@GetMapping("all")
-	public ResponseInfo<List<Users>> getAllMethod() {
+	public ResponseInfo<List<Users>> getAllMethod() throws DataNotFoundException, InternalServerException {
 		return service.getAllInfos();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseInfo<Optional<Users>> getMethod(@PathVariable Integer id) {
+	public ResponseInfo<Optional<Users>> getMethod(@PathVariable Integer id)
+			throws DataNotFoundException, InternalServerException {
 		return service.getInfo(id);
 	}
 
 	@GetMapping("/byUsername/{username}")
-	public ResponseInfo<Optional<Users>> getByNameMethod(@PathVariable String username) {
+	public ResponseInfo<Optional<Users>> getByNameMethod(@PathVariable String username)
+			throws DataNotFoundException, InternalServerException {
 		return service.getInfoByUsername(username);
 	}
 
 	@PostMapping("/add")
-	public ResponseInfo<String> postMethod(@Validated @RequestBody Users user) {
+	public ResponseInfo<String> postMethod(@Validated @RequestBody Users user) throws InternalServerException {
 		return service.saveInfo(user);
 	}
 
