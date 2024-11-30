@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.ResponseInfo;
@@ -71,12 +72,26 @@ public class ApplicationExceptionHandler {
 	@ExceptionHandler(AuthenticationException.class)
 	public ResponseEntity<ResponseInfo<Map<String, String>>> handleAuthenticationException(AuthenticationException ex) {
 		Map<String, String> errorMap = new HashMap<>();
-		errorMap.put("error", "Authentication failed");
+		errorMap.put("error", "Authorization failed");
 		errorMap.put("message", ex.getMessage());
 
 		ResponseInfo<Map<String, String>> responseInfo = new ResponseInfo<>();
 		responseInfo.setStatusCode(HttpStatus.UNAUTHORIZED.value()); // 401 Unauthorized
-		responseInfo.setMessage("Authentication Failed");
+		responseInfo.setMessage("Authorization failed");
+		responseInfo.setData(errorMap);
+
+		return new ResponseEntity<>(responseInfo, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<ResponseInfo<Map<String, String>>> handleAuthorizationException(AuthorizationException ex) {
+		Map<String, String> errorMap = new HashMap<>();
+		errorMap.put("error", "Authorization failed");
+		errorMap.put("message", ex.getMessage());
+
+		ResponseInfo<Map<String, String>> responseInfo = new ResponseInfo<>();
+		responseInfo.setStatusCode(HttpStatus.UNAUTHORIZED.value()); // 401 Unauthorized
+		responseInfo.setMessage(HttpStatus.UNAUTHORIZED.name());
 		responseInfo.setData(errorMap);
 
 		return new ResponseEntity<>(responseInfo, HttpStatus.UNAUTHORIZED);

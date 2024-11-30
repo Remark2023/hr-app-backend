@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.CandidateEvaluation;
@@ -25,7 +27,7 @@ import com.remark_herlan.hr_app.service.CandidateEvaluationService;
  */
 
 @RestController
-@RequestMapping("api/evaluations")
+@RequestMapping("api/jwt/evaluations")
 public class CandidateEvaluationController {
 
 	@Autowired
@@ -44,8 +46,10 @@ public class CandidateEvaluationController {
 	}
 
 	@PostMapping("/add")
-	public ResponseInfo<String> postMethod(@RequestBody CandidateEvaluation evaluation) throws InternalServerException {
-		return service.saveInfo(evaluation);
+	public ResponseInfo<String> postMethod(@RequestBody CandidateEvaluation evaluation,
+			@RequestAttribute("username") String username, @RequestAttribute("role") String role)
+			throws InternalServerException, AuthorizationException {
+		return service.saveInfo(evaluation, username, role);
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.remark_herlan.hr_app.dao.CandidateEvaluationDao;
+import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.CandidateEvaluation;
@@ -75,19 +76,28 @@ public class CandidateEvaluationService {
 
 	}
 
-	public ResponseInfo<String> saveInfo(CandidateEvaluation candidateEvaluation) throws InternalServerException {
+	public ResponseInfo<String> saveInfo(CandidateEvaluation candidateEvaluation, String username, String role)
+			throws InternalServerException, AuthorizationException {
+
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
+			if (!"INTERVIEWER".equals(role)) {
+				throw new AuthorizationException(
+						"Access denied: Only interviewers are allowed to perform this action.");
+			}
+
 			dao.save(candidateEvaluation);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully added!");
-			responseInfo.setData(HttpStatus.OK.name());
+			responseInfo.setData("Candidate evaluation saved successfully.");
 
 			return responseInfo;
-		} catch (Exception e) {
-			throw new InternalServerException(e.getMessage());
+		} catch (AuthorizationException authEx) {
+			throw authEx;
+		} catch (Exception ex) {
+			throw new InternalServerException("An unexpected error occurred: " + ex.getMessage());
 		}
 	}
 
