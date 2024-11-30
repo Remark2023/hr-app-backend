@@ -26,16 +26,14 @@ import com.remark_herlan.hr_app.service.UsersService;
  */
 
 @RestController
-@RequestMapping("api/jwt/users")
+@RequestMapping("api/users")
 public class UsersController {
 
 	@Autowired
 	UsersService service;
 
 	@GetMapping("all")
-	public ResponseInfo<List<Users>> getAllMethod(@RequestAttribute("username") String username,
-			@RequestAttribute("role") String role) throws DataNotFoundException, InternalServerException {
-		System.out.println(username + " " + role);
+	public ResponseInfo<List<Users>> getAllMethod() throws DataNotFoundException, InternalServerException {
 		return service.getAllInfos();
 	}
 
