@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,8 +40,8 @@ public class UsersViewController {
 		return service.getInfo(id);
 	}
 
-	@GetMapping("/byUsername/{username}")
-	public ResponseInfo<UsersView> getByNameMethod(@PathVariable String username)
+	@GetMapping("/byUsername")
+	public ResponseInfo<UsersView> getByNameMethod(@RequestAttribute("username") String username)
 			throws DataNotFoundException, InternalServerException {
 		return service.getInfoByUsername(username);
 	}
