@@ -14,7 +14,7 @@ import com.remark_herlan.hr_app.model.Users;
  */
 
 @Repository
-public interface UsersDao extends JpaRepository<Users, Integer> {
+public interface UsersDao extends JpaRepository<Users, Long> {
 
 	Optional<Users> findByUsername(String username);
 

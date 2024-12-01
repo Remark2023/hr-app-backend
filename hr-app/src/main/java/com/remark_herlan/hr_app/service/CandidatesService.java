@@ -7,33 +7,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.remark_herlan.hr_app.dao.CandidateExperiencesDao;
+import com.remark_herlan.hr_app.dao.CandidatesDao;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
-import com.remark_herlan.hr_app.model.CandidateExperiences;
+import com.remark_herlan.hr_app.model.Candidates;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 
 /**
  * author: Naimul Hassan
  * 
- * date: 11/30/2024
+ * date: 12/01/2024
  */
 
 @Service
-public class CandidateExperiencesService {
+public class CandidatesService {
 
 	@Autowired
-	CandidateExperiencesDao dao;
+	CandidatesDao dao;
 
 	@Autowired
 	GetSequenceService sequenceService;
 
-	public ResponseInfo<List<CandidateExperiences>> getAllInfos()
-			throws InternalServerException, DataNotFoundException {
-		ResponseInfo<List<CandidateExperiences>> responseInfo = new ResponseInfo<>();
+	public ResponseInfo<List<Candidates>> getAllInfos() throws InternalServerException, DataNotFoundException {
+		ResponseInfo<List<Candidates>> responseInfo = new ResponseInfo<>();
 
 		try {
-			List<CandidateExperiences> response = dao.findAll();
+			List<Candidates> response = dao.findAll();
 
 			if (response.isEmpty()) {
 				throw new DataNotFoundException("No data found!");
@@ -53,12 +52,11 @@ public class CandidateExperiencesService {
 
 	}
 
-	public ResponseInfo<Optional<CandidateExperiences>> getInfo(Long id)
-			throws InternalServerException, DataNotFoundException {
-		ResponseInfo<Optional<CandidateExperiences>> responseInfo = new ResponseInfo<>();
+	public ResponseInfo<Optional<Candidates>> getInfo(Long id) throws InternalServerException, DataNotFoundException {
+		ResponseInfo<Optional<Candidates>> responseInfo = new ResponseInfo<>();
 
 		try {
-			Optional<CandidateExperiences> response = dao.findById(id);
+			Optional<Candidates> response = dao.findById(id);
 
 			if (response.isEmpty()) {
 				throw new DataNotFoundException("No data found!");
@@ -78,20 +76,19 @@ public class CandidateExperiencesService {
 
 	}
 
-	public ResponseInfo<String> saveInfo(CandidateExperiences candidateExperiences)
-			throws InternalServerException, DataNotFoundException {
+	public ResponseInfo<String> saveInfo(Candidates candidate) throws InternalServerException, DataNotFoundException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
-			ResponseInfo<Long> sequenceResponse = sequenceService.generateNewSequenceId("id", "candidate_experiences");
+			ResponseInfo<Long> sequenceResponse = sequenceService.generateNewSequenceId("id", "candidates");
 			if (!(sequenceResponse.getStatusCode() == 200)) {
 				throw new DataNotFoundException("No data found!");
 			}
 
 			Long sequence = sequenceResponse.getData();
-			candidateExperiences.setId(sequence);
+			candidate.setCandidateNumber(sequence);
 
-			dao.save(candidateExperiences);
+			dao.save(candidate);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully added!");

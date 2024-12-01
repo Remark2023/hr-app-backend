@@ -25,6 +25,9 @@ public class UsersService {
 	@Autowired
 	UsersDao dao;
 
+	@Autowired
+	GetSequenceService sequenceService;
+
 	public ResponseInfo<List<Users>> getAllInfos() throws DataNotFoundException, InternalServerException {
 		ResponseInfo<List<Users>> responseInfo = new ResponseInfo<>();
 
@@ -48,7 +51,7 @@ public class UsersService {
 		}
 	}
 
-	public ResponseInfo<Optional<Users>> getInfo(Integer id) throws DataNotFoundException, InternalServerException {
+	public ResponseInfo<Optional<Users>> getInfo(Long id) throws DataNotFoundException, InternalServerException {
 		ResponseInfo<Optional<Users>> responseInfo = new ResponseInfo<>();
 
 		try {
@@ -71,7 +74,8 @@ public class UsersService {
 		}
 	}
 
-	public ResponseInfo<Optional<Users>> getInfoByUsername(String username) throws DataNotFoundException, InternalServerException {
+	public ResponseInfo<Optional<Users>> getInfoByUsername(String username)
+			throws DataNotFoundException, InternalServerException {
 		ResponseInfo<Optional<Users>> responseInfo = new ResponseInfo<>();
 
 		try {
@@ -98,6 +102,14 @@ public class UsersService {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
+			ResponseInfo<Long> sequenceResponse = sequenceService.generateNewSequenceId("id", "users");
+			if (!(sequenceResponse.getStatusCode() == 200)) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			Long sequence = sequenceResponse.getData();
+			user.setId(sequence);
+
 			dao.save(user);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
@@ -110,7 +122,7 @@ public class UsersService {
 		}
 	}
 
-	public ResponseInfo<String> deleteInfo(Integer id) throws InternalServerException {
+	public ResponseInfo<String> deleteInfo(Long id) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
