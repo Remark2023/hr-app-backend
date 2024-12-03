@@ -16,7 +16,6 @@ import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.CandidateEvaluation;
-import com.remark_herlan.hr_app.model.CandidateEvaluationCompositKey;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 import com.remark_herlan.hr_app.service.CandidateEvaluationService;
 
@@ -40,7 +39,7 @@ public class CandidateEvaluationController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseInfo<Optional<CandidateEvaluation>> getMethod(@PathVariable CandidateEvaluationCompositKey id)
+	public ResponseInfo<Optional<CandidateEvaluation>> getMethod(@PathVariable Long id)
 			throws InternalServerException, DataNotFoundException {
 		return service.getInfo(id);
 	}

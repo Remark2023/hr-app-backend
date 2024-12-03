@@ -1,7 +1,10 @@
 package com.remark_herlan.hr_app.model;
 
-import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
@@ -14,8 +17,15 @@ import jakarta.persistence.Table;
 @Table(name = "candidate_facilities")
 public class CandidateFacilities {
 
-	@EmbeddedId
-	private CandidateFacilitiesCompositeKey key;
+	@Id
+	private Long id;
+
+//	@Column(name = "candidate_numbers", nullable = false)
+//	private Long candidateNumbers;
+
+	@Column(name = "facility_type", nullable = false)
+	private String facilityType;
+
 	private String company;
 	private String sbu;
 	private String department;
@@ -33,9 +43,21 @@ public class CandidateFacilities {
 	private String incentiveOrKpi;
 	private String mobileCeiling;
 	private String totalCtc;
+	
+	@ManyToOne
+	@JoinColumn(name = "candidate_numbers", nullable = false)
+	private Candidates candidate;
 
-	public CandidateFacilitiesCompositeKey getKey() {
-		return key;
+	public Long getId() {
+		return id;
+	}
+
+//	public Long getCandidateNumbers() {
+//		return candidateNumbers;
+//	}
+
+	public String getFacilityType() {
+		return facilityType;
 	}
 
 	public String getCompany() {
@@ -106,8 +128,16 @@ public class CandidateFacilities {
 		return totalCtc;
 	}
 
-	public void setKey(CandidateFacilitiesCompositeKey key) {
-		this.key = key;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+//	public void setCandidateNumbers(Long candidateNumbers) {
+//		this.candidateNumbers = candidateNumbers;
+//	}
+
+	public void setFacilityType(String facilityType) {
+		this.facilityType = facilityType;
 	}
 
 	public void setCompany(String company) {

@@ -76,16 +76,16 @@ public class CandidatesService {
 
 	}
 
-	public ResponseInfo<String> saveInfo(Candidates candidate) throws InternalServerException, DataNotFoundException {
+	public ResponseInfo<String> saveInfo(Candidates candidate) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
-			ResponseInfo<Long> sequenceResponse = sequenceService.generateNewSequenceId("id", "candidates");
-			if (!(sequenceResponse.getStatusCode() == 200)) {
-				throw new DataNotFoundException("No data found!");
-			}
+//			ResponseInfo<Long> sequenceResponse = sequenceService.generateNewSequenceId("id", "candidates");
+//			if (!(sequenceResponse.getStatusCode() == 200)) {
+//				throw new DataNotFoundException("No data found!");
+//			}
 
-			Long sequence = sequenceResponse.getData();
+			Long sequence = sequenceService.getSequenceId("candidate_number", "candidates");
 			candidate.setCandidateNumber(sequence);
 
 			dao.save(candidate);
@@ -95,9 +95,6 @@ public class CandidatesService {
 			responseInfo.setData(HttpStatus.OK.name());
 
 			return responseInfo;
-		} catch (DataNotFoundException e) {
-			// Explicitly handle known exception
-			throw e; // Re-throw to let a higher-level handler manage it
 		} catch (Exception e) {
 			throw new InternalServerException(e.getMessage());
 		}

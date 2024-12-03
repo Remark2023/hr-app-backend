@@ -12,7 +12,6 @@ import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.CandidateEvaluation;
-import com.remark_herlan.hr_app.model.CandidateEvaluationCompositKey;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 
 /**
@@ -51,7 +50,7 @@ public class CandidateEvaluationService {
 
 	}
 
-	public ResponseInfo<Optional<CandidateEvaluation>> getInfo(CandidateEvaluationCompositKey id)
+	public ResponseInfo<Optional<CandidateEvaluation>> getInfo(Long id)
 			throws InternalServerException, DataNotFoundException {
 		ResponseInfo<Optional<CandidateEvaluation>> responseInfo = new ResponseInfo<>();
 
@@ -101,7 +100,7 @@ public class CandidateEvaluationService {
 		}
 	}
 
-	public ResponseInfo<String> deleteInfo(CandidateEvaluationCompositKey id) throws InternalServerException {
+	public ResponseInfo<String> deleteInfo(Long id) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {

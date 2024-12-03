@@ -1,10 +1,13 @@
 package com.remark_herlan.hr_app.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 /**
- * author: Naimul Hassan 
+ * author: Naimul Hassan
  * 
  * date: 11/26/2024
  */
@@ -13,28 +16,31 @@ import jakarta.persistence.Id;
 public class Roles {
 
 	@Id
-	private int id;
+	private Long id;
 	private String title;
 	private String status;
 
-	public int getId() {
-		return id;
-	}
+	@OneToMany(mappedBy = "role")
+	private List<Users> user;
 
-	public void setId(int id) {
-		this.id = id;
+	public Long getId() {
+		return id;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getStatus() {
 		return status;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public void setStatus(String status) {

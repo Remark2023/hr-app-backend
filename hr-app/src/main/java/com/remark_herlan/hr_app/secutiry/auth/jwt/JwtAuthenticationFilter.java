@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.remark_herlan.hr_app.dao.UsersViewDao;
+import com.remark_herlan.hr_app.dao.UsersDao;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
-	UsersViewDao dao;
+	UsersDao dao;
 
 	public JwtAuthenticationFilter(@Lazy JwtTokenUtil jwtTokenUtil) {
 		this.jwtTokenUtil = jwtTokenUtil;
@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			String username = jwtTokenUtil.extractUsername(token);
 			request.setAttribute("username", username);
 
-			String userRole = dao.findByUsername(username).getUserRole();
+			String userRole = dao.findByUsername(username).getRole().getTitle();
 			request.setAttribute("role", userRole);
 
 			SecurityContextHolder.getContext().setAuthentication(jwtTokenUtil.getAuthentication(token));

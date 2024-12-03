@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 /**
  * author: Naimul Hassan
@@ -19,10 +20,12 @@ public class Users {
 	private String username;
 	private String password;
 	private String status;
-	private Integer roleId;
-	private LocalDateTime creationDate;
+	private LocalDateTime creationDate = LocalDateTime.now();
 	private LocalDateTime activeDate;
 	private LocalDateTime inactiveDate;
+
+	@ManyToOne
+	private Roles role;
 
 	public Long getId() {
 		return id;
@@ -40,8 +43,8 @@ public class Users {
 		return status;
 	}
 
-	public Integer getRoleId() {
-		return roleId;
+	public Roles getRole() {
+		return role;
 	}
 
 	public LocalDateTime getCreationDate() {
@@ -72,8 +75,8 @@ public class Users {
 		this.status = status;
 	}
 
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
+	public void setRole(Roles role) {
+		this.role = role;
 	}
 
 	public void setCreationDate(LocalDateTime creationDate) {

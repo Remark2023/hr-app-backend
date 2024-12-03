@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.remark_herlan.hr_app.dao.UsersViewDao;
-import com.remark_herlan.hr_app.model.UsersView;
+import com.remark_herlan.hr_app.dao.UsersDao;
+import com.remark_herlan.hr_app.model.Users;
 
 /**
  * author: Naimul Hassan
@@ -22,15 +22,15 @@ import com.remark_herlan.hr_app.model.UsersView;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private UsersViewDao usersDao;
+	private UsersDao usersDao;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UsersView user = usersDao.findByUsername(username);
+		Users user = usersDao.findByUsername(username);
 		if (user == null || !"APPROVED".equals(user.getStatus())) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-				Collections.singleton(new SimpleGrantedAuthority(user.getUserRole())));
+				Collections.singleton(new SimpleGrantedAuthority(user.getRole().getTitle())));
 	}
 }

@@ -1,7 +1,11 @@
 package com.remark_herlan.hr_app.model;
 
+import org.hibernate.annotations.ManyToAny;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  * author: Naimul Hassan
@@ -17,6 +21,10 @@ public class CandidateExperiences {
 	private String experienceField;
 	private String organization;
 	private String years;
+	
+	@ManyToOne
+	@JoinColumn(name = "candidate_number", nullable = false)
+	private Candidates candidate;
 
 	public Long getId() {
 		return id;

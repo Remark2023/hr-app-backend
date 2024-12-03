@@ -2,8 +2,11 @@ package com.remark_herlan.hr_app.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
@@ -16,8 +19,12 @@ import jakarta.persistence.Table;
 @Table(name = "candidate_evaluation")
 public class CandidateEvaluation {
 
-	@EmbeddedId
-	private CandidateEvaluationCompositKey key;
+	@Id
+	private Long id;
+
+	@Column(name = "submitted_by", nullable = false)
+	private Long submittedBy;
+
 	private LocalDateTime submittedDate;
 	private Double attireBodyLanguage;
 	private Double workKnowledge;
@@ -29,8 +36,16 @@ public class CandidateEvaluation {
 	private Double avgMarks;
 	private String performance;
 
-	public CandidateEvaluationCompositKey getKey() {
-		return key;
+	@ManyToOne
+	@JoinColumn(name = "candidate_number", nullable = false)
+	private Candidates candidate;
+
+	public Long getId() {
+		return id;
+	}
+
+	public Long getSubmittedBy() {
+		return submittedBy;
 	}
 
 	public LocalDateTime getSubmittedDate() {
@@ -73,8 +88,12 @@ public class CandidateEvaluation {
 		return performance;
 	}
 
-	public void setKey(CandidateEvaluationCompositKey key) {
-		this.key = key;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setSubmittedBy(Long submittedBy) {
+		this.submittedBy = submittedBy;
 	}
 
 	public void setSubmittedDate(LocalDateTime submittedDate) {

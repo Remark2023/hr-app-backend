@@ -1,9 +1,12 @@
 package com.remark_herlan.hr_app.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 /**
  * author: Naimul Hassan
@@ -35,7 +38,6 @@ public class Candidates {
 	private String referenceRelation;
 	private String referenceDesignation;
 	private Boolean haveReference;
-	private Boolean haveExperiences;
 	private String noticePeriods;
 	private String hrNotes;
 	private String managementComment;
@@ -56,6 +58,16 @@ public class Candidates {
 	private String department;
 	private String reportsTo;
 	private String designation;
+	private Boolean haveExperiences;
+
+	@OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<CandidateExperiences> experiences;
+
+	@OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<CandidateFacilities> facilitiesInfo;
+
+	@OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<CandidateEvaluation> evaluationInfo;
 
 	public Long getCandidateNumber() {
 		return candidateNumber;
@@ -135,10 +147,6 @@ public class Candidates {
 
 	public Boolean getHaveReference() {
 		return haveReference;
-	}
-
-	public Boolean getHaveExperiences() {
-		return haveExperiences;
 	}
 
 	public String getNoticePeriods() {
@@ -221,6 +229,22 @@ public class Candidates {
 		return designation;
 	}
 
+	public Boolean getHaveExperiences() {
+		return haveExperiences;
+	}
+
+	public List<CandidateExperiences> getExperiences() {
+		return experiences;
+	}
+
+	public List<CandidateFacilities> getFacilitiesInfo() {
+		return facilitiesInfo;
+	}
+
+	public List<CandidateEvaluation> getEvaluationInfo() {
+		return evaluationInfo;
+	}
+
 	public void setCandidateNumber(Long candidateNumber) {
 		this.candidateNumber = candidateNumber;
 	}
@@ -301,10 +325,6 @@ public class Candidates {
 		this.haveReference = haveReference;
 	}
 
-	public void setHaveExperiences(Boolean haveExperiences) {
-		this.haveExperiences = haveExperiences;
-	}
-
 	public void setNoticePeriods(String noticePeriods) {
 		this.noticePeriods = noticePeriods;
 	}
@@ -383,6 +403,22 @@ public class Candidates {
 
 	public void setDesignation(String designation) {
 		this.designation = designation;
+	}
+
+	public void setHaveExperiences(Boolean haveExperiences) {
+		this.haveExperiences = haveExperiences;
+	}
+
+	public void setExperiences(List<CandidateExperiences> experiences) {
+		this.experiences = experiences;
+	}
+
+	public void setFacilitiesInfo(List<CandidateFacilities> facilitiesInfo) {
+		this.facilitiesInfo = facilitiesInfo;
+	}
+
+	public void setEvaluationInfo(List<CandidateEvaluation> evaluationInfo) {
+		this.evaluationInfo = evaluationInfo;
 	}
 
 }

@@ -74,14 +74,14 @@ public class UsersService {
 		}
 	}
 
-	public ResponseInfo<Optional<Users>> getInfoByUsername(String username)
+	public ResponseInfo<Users> getInfoByUsername(String username)
 			throws DataNotFoundException, InternalServerException {
-		ResponseInfo<Optional<Users>> responseInfo = new ResponseInfo<>();
+		ResponseInfo<Users> responseInfo = new ResponseInfo<>();
 
 		try {
-			Optional<Users> response = dao.findByUsername(username);
+			Users response = dao.findByUsername(username);
 
-			if (response.isEmpty()) {
+			if (response == null) {
 				throw new DataNotFoundException("No data found!");
 			}
 
@@ -102,12 +102,7 @@ public class UsersService {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
-			ResponseInfo<Long> sequenceResponse = sequenceService.generateNewSequenceId("id", "users");
-			if (!(sequenceResponse.getStatusCode() == 200)) {
-				throw new DataNotFoundException("No data found!");
-			}
-
-			Long sequence = sequenceResponse.getData();
+			Long sequence = sequenceService.getSequenceId("id", "users");
 			user.setId(sequence);
 
 			dao.save(user);

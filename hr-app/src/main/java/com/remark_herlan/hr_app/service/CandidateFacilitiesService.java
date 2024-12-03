@@ -11,7 +11,6 @@ import com.remark_herlan.hr_app.dao.CandidateFacilitiesDao;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.CandidateFacilities;
-import com.remark_herlan.hr_app.model.CandidateFacilitiesCompositeKey;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 
 /**
@@ -50,7 +49,7 @@ public class CandidateFacilitiesService {
 
 	}
 
-	public ResponseInfo<Optional<CandidateFacilities>> getInfo(CandidateFacilitiesCompositeKey id)
+	public ResponseInfo<Optional<CandidateFacilities>> getInfo(Long id)
 			throws InternalServerException, DataNotFoundException {
 		ResponseInfo<Optional<CandidateFacilities>> responseInfo = new ResponseInfo<>();
 
@@ -92,7 +91,7 @@ public class CandidateFacilitiesService {
 		}
 	}
 
-	public ResponseInfo<String> deleteInfo(CandidateFacilitiesCompositeKey id) throws InternalServerException {
+	public ResponseInfo<String> deleteInfo(Long id) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {

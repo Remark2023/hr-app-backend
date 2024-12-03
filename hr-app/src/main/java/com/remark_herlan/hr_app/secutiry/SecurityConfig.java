@@ -1,5 +1,6 @@
 package com.remark_herlan.hr_app.secutiry;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -46,6 +47,7 @@ public class SecurityConfig {
 																												// to
 																												// this
 																												// endpoint
+						.requestMatchers("api/users/get/byUsername").authenticated()
 						.anyRequest().permitAll())
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Add JWT filter
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Make
@@ -60,12 +62,11 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Add allowed origins
-//		configuration.setAllowedOrigins(Arrays.asList(
-//	            "http://localhost:3000",
-//	            "http://another-client.com",
-//	            "http://yet-another-client.com"
-//	        )); // allow multiple origins
+//		configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Add allowed origins
+		configuration.setAllowedOrigins(Arrays.asList(
+	            "http://localhost:8082",
+	            "http://182.160.114.100:3000/"
+	        )); // allow multiple origins
 //		configuration.setAllowedOrigins(Arrays.asList("*")); // Allow all origins, but it is suggested to not use for security purpose
 		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Add allowed methods
 		configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Add allowed headers

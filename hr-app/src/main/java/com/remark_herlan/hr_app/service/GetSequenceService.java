@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.remark_herlan.hr_app.dao.UsersViewDao;
+import com.remark_herlan.hr_app.dao.UsersDao;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.ResponseInfo;
@@ -19,7 +19,7 @@ import com.remark_herlan.hr_app.model.ResponseInfo;
 public class GetSequenceService {
 
 	@Autowired
-	private UsersViewDao dao;
+	private UsersDao dao;
 
 	public ResponseInfo<Long> generateNewSequenceId(String primaryKey, String tableName)
 			throws InternalServerException, DataNotFoundException {
@@ -42,7 +42,24 @@ public class GetSequenceService {
 		} catch (Exception e) {
 			throw new InternalServerException(e.getMessage());
 		}
-//		return dao.getNewSequenceId(primaryKey, tableName);
+	}
+
+	public Long getSequenceId(String primaryKey, String tableName)
+			throws InternalServerException, DataNotFoundException {
+		try {
+			ResponseInfo<Long> sequenceResponse = generateNewSequenceId(primaryKey, tableName);
+			if (!(sequenceResponse.getStatusCode() == 200)) {
+				throw new DataNotFoundException("No column named " + primaryKey + " in " + tableName + " is found!");
+			}
+
+			Long sequence = sequenceResponse.getData();
+
+			return sequence;
+		} catch (DataNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
 	}
 
 }

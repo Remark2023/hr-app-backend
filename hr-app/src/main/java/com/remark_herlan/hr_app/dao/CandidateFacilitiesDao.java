@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.remark_herlan.hr_app.model.CandidateFacilities;
-import com.remark_herlan.hr_app.model.CandidateFacilitiesCompositeKey;
 
 /**
  * author: Naimul Hassan
@@ -13,6 +12,6 @@ import com.remark_herlan.hr_app.model.CandidateFacilitiesCompositeKey;
  */
 
 @Repository
-public interface CandidateFacilitiesDao extends JpaRepository<CandidateFacilities, CandidateFacilitiesCompositeKey> {
+public interface CandidateFacilitiesDao extends JpaRepository<CandidateFacilities, Long> {
 
 }

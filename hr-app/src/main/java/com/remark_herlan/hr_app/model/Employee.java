@@ -22,6 +22,7 @@ public class Employee {
 	private String designation;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
+	
 	@OneToOne
 	private Users user;
 
