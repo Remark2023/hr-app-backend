@@ -1,5 +1,6 @@
 package com.remark_herlan.hr_app.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
@@ -39,6 +41,12 @@ public class CandidatesController {
 	public ResponseInfo<Optional<Candidates>> getMethod(@PathVariable Long id)
 			throws InternalServerException, DataNotFoundException {
 		return service.getInfo(id);
+	}
+
+	@GetMapping("/byDate")
+	public ResponseInfo<List<Candidates>> getByDateMethod(@RequestParam(value = "city") LocalDateTime date)
+			throws InternalServerException, DataNotFoundException {
+		return service.getInfoByDate(date);
 	}
 
 	@PostMapping("/add")

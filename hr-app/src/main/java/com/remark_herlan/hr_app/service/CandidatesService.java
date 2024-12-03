@@ -1,5 +1,6 @@
 package com.remark_herlan.hr_app.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +75,54 @@ public class CandidatesService {
 			throw new InternalServerException(e.getMessage());
 		}
 
+	}
+
+	public ResponseInfo<List<Candidates>> getInfoByFullname(String name)
+			throws DataNotFoundException, InternalServerException {
+		ResponseInfo<List<Candidates>> responseInfo = new ResponseInfo<>();
+
+		try {
+			List<Candidates> response = dao.findByFullName(name);
+
+			if (response == null) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(response);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			// Explicitly handle known exception
+			throw e; // Re-throw to let a higher-level handler manage it
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
+	public ResponseInfo<List<Candidates>> getInfoByDate(LocalDateTime date)
+			throws DataNotFoundException, InternalServerException {
+		ResponseInfo<List<Candidates>> responseInfo = new ResponseInfo<>();
+
+		try {
+			List<Candidates> response = dao.findByInterviewDate(date);
+
+			if (response == null) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(response);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			// Explicitly handle known exception
+			throw e; // Re-throw to let a higher-level handler manage it
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
 	}
 
 	public ResponseInfo<Candidates> saveInfo(Candidates candidate) throws InternalServerException {

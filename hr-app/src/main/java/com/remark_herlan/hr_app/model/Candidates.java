@@ -19,7 +19,7 @@ public class Candidates {
 
 	@Id
 	private Long candidateNumber;
-	private String FullName;
+	private String fullName;
 	private String age;
 	private String email;
 	private String contactNumber;
@@ -74,7 +74,7 @@ public class Candidates {
 	}
 
 	public String getFullName() {
-		return FullName;
+		return fullName;
 	}
 
 	public String getAge() {
@@ -250,7 +250,7 @@ public class Candidates {
 	}
 
 	public void setFullName(String fullName) {
-		FullName = fullName;
+		this.fullName = fullName;
 	}
 
 	public void setAge(String age) {
