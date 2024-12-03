@@ -25,6 +25,9 @@ public class CandidateFacilitiesService {
 	@Autowired
 	CandidateFacilitiesDao dao;
 
+	@Autowired
+	GetSequenceService sequenceService;
+
 	public ResponseInfo<List<CandidateFacilities>> getAllInfos() throws InternalServerException, DataNotFoundException {
 		ResponseInfo<List<CandidateFacilities>> responseInfo = new ResponseInfo<>();
 
@@ -74,16 +77,20 @@ public class CandidateFacilitiesService {
 
 	}
 
-	public ResponseInfo<String> saveInfo(CandidateFacilities candidateFacilities) throws InternalServerException {
+	public ResponseInfo<CandidateFacilities> saveInfo(CandidateFacilities candidateFacilities)
+			throws InternalServerException {
 
-		ResponseInfo<String> responseInfo = new ResponseInfo<>();
+		ResponseInfo<CandidateFacilities> responseInfo = new ResponseInfo<>();
 
 		try {
-			dao.save(candidateFacilities);
+			Long sequence = sequenceService.getSequenceId("id", "candidate_facilities");
+			candidateFacilities.setId(sequence);
+
+			CandidateFacilities response = dao.save(candidateFacilities);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully added!");
-			responseInfo.setData("Candidate evaluation saved successfully.");
+			responseInfo.setData(response);
 
 			return responseInfo;
 		} catch (Exception ex) {

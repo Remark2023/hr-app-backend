@@ -136,4 +136,8 @@ public class CandidateEvaluation {
 		this.performance = performance;
 	}
 
+	public void setCandidate(Candidates candidate) {
+		this.candidate = candidate;
+	}
+
 }

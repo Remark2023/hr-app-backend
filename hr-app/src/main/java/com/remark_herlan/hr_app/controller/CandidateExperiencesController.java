@@ -43,7 +43,7 @@ public class CandidateExperiencesController {
 	}
 
 	@PostMapping("/add")
-	public ResponseInfo<String> postMethod(@RequestBody CandidateExperiences candidateExperiences)
+	public ResponseInfo<CandidateExperiences> postMethod(@RequestBody CandidateExperiences candidateExperiences)
 			throws InternalServerException, DataNotFoundException {
 		return service.saveInfo(candidateExperiences);
 	}

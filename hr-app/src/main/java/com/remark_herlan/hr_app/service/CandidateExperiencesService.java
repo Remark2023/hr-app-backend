@@ -78,9 +78,9 @@ public class CandidateExperiencesService {
 
 	}
 
-	public ResponseInfo<String> saveInfo(CandidateExperiences candidateExperiences)
+	public ResponseInfo<CandidateExperiences> saveInfo(CandidateExperiences candidateExperiences)
 			throws InternalServerException, DataNotFoundException {
-		ResponseInfo<String> responseInfo = new ResponseInfo<>();
+		ResponseInfo<CandidateExperiences> responseInfo = new ResponseInfo<>();
 
 		try {
 			ResponseInfo<Long> sequenceResponse = sequenceService.generateNewSequenceId("id", "candidate_experiences");
@@ -91,11 +91,11 @@ public class CandidateExperiencesService {
 			Long sequence = sequenceResponse.getData();
 			candidateExperiences.setId(sequence);
 
-			dao.save(candidateExperiences);
+			CandidateExperiences response = dao.save(candidateExperiences);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully added!");
-			responseInfo.setData(HttpStatus.OK.name());
+			responseInfo.setData(response);
 
 			return responseInfo;
 		} catch (DataNotFoundException e) {

@@ -43,7 +43,8 @@ public class CandidateFacilitiesController {
 	}
 
 	@PostMapping("/add")
-	public ResponseInfo<String> postMethod(@RequestBody CandidateFacilities facility) throws InternalServerException {
+	public ResponseInfo<CandidateFacilities> postMethod(@RequestBody CandidateFacilities facility)
+			throws InternalServerException {
 		return service.saveInfo(facility);
 	}
 

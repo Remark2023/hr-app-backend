@@ -20,9 +20,6 @@ public class CandidateFacilities {
 	@Id
 	private Long id;
 
-//	@Column(name = "candidate_numbers", nullable = false)
-//	private Long candidateNumbers;
-
 	@Column(name = "facility_type", nullable = false)
 	private String facilityType;
 
@@ -43,7 +40,7 @@ public class CandidateFacilities {
 	private String incentiveOrKpi;
 	private String mobileCeiling;
 	private String totalCtc;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "candidate_numbers", nullable = false)
 	private Candidates candidate;
@@ -51,10 +48,6 @@ public class CandidateFacilities {
 	public Long getId() {
 		return id;
 	}
-
-//	public Long getCandidateNumbers() {
-//		return candidateNumbers;
-//	}
 
 	public String getFacilityType() {
 		return facilityType;
@@ -132,10 +125,6 @@ public class CandidateFacilities {
 		this.id = id;
 	}
 
-//	public void setCandidateNumbers(Long candidateNumbers) {
-//		this.candidateNumbers = candidateNumbers;
-//	}
-
 	public void setFacilityType(String facilityType) {
 		this.facilityType = facilityType;
 	}
@@ -206,6 +195,10 @@ public class CandidateFacilities {
 
 	public void setTotalCtc(String totalCtc) {
 		this.totalCtc = totalCtc;
+	}
+
+	public void setCandidate(Candidates candidate) {
+		this.candidate = candidate;
 	}
 
 }

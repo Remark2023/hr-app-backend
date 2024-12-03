@@ -76,23 +76,18 @@ public class CandidatesService {
 
 	}
 
-	public ResponseInfo<String> saveInfo(Candidates candidate) throws InternalServerException {
-		ResponseInfo<String> responseInfo = new ResponseInfo<>();
+	public ResponseInfo<Candidates> saveInfo(Candidates candidate) throws InternalServerException {
+		ResponseInfo<Candidates> responseInfo = new ResponseInfo<>();
 
 		try {
-//			ResponseInfo<Long> sequenceResponse = sequenceService.generateNewSequenceId("id", "candidates");
-//			if (!(sequenceResponse.getStatusCode() == 200)) {
-//				throw new DataNotFoundException("No data found!");
-//			}
-
 			Long sequence = sequenceService.getSequenceId("candidate_number", "candidates");
 			candidate.setCandidateNumber(sequence);
 
-			dao.save(candidate);
+			Candidates response = dao.save(candidate);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully added!");
-			responseInfo.setData(HttpStatus.OK.name());
+			responseInfo.setData(response);
 
 			return responseInfo;
 		} catch (Exception e) {
