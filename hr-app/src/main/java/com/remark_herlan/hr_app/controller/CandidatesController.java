@@ -44,7 +44,7 @@ public class CandidatesController {
 	}
 
 	@GetMapping("/byDate")
-	public ResponseInfo<List<Candidates>> getByDateMethod(@RequestParam(value = "city") LocalDateTime date)
+	public ResponseInfo<List<Candidates>> getByDateMethod(@RequestParam(value = "date") LocalDateTime date)
 			throws InternalServerException, DataNotFoundException {
 		return service.getInfoByDate(date);
 	}

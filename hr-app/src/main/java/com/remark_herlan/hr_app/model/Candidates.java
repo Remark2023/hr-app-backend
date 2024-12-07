@@ -54,10 +54,6 @@ public class Candidates {
 	private Boolean workAtFactory;
 	private Boolean operateComp;
 	private Boolean agreedTerms;
-	private String sbu;
-	private String department;
-	private String reportsTo;
-	private String designation;
 	private Boolean haveExperiences;
 
 	@OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -211,22 +207,6 @@ public class Candidates {
 
 	public Boolean getAgreedTerms() {
 		return agreedTerms;
-	}
-
-	public String getSbu() {
-		return sbu;
-	}
-
-	public String getDepartment() {
-		return department;
-	}
-
-	public String getReportsTo() {
-		return reportsTo;
-	}
-
-	public String getDesignation() {
-		return designation;
 	}
 
 	public Boolean getHaveExperiences() {
@@ -387,22 +367,6 @@ public class Candidates {
 
 	public void setAgreedTerms(Boolean agreedTerms) {
 		this.agreedTerms = agreedTerms;
-	}
-
-	public void setSbu(String sbu) {
-		this.sbu = sbu;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
-	public void setReportsTo(String reportsTo) {
-		this.reportsTo = reportsTo;
-	}
-
-	public void setDesignation(String designation) {
-		this.designation = designation;
 	}
 
 	public void setHaveExperiences(Boolean haveExperiences) {
