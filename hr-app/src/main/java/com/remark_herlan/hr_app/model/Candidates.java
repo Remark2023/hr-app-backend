@@ -1,7 +1,9 @@
 package com.remark_herlan.hr_app.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -44,7 +46,9 @@ public class Candidates {
 	private String doj;
 	private String probationPeriod;
 	private String investigation;
-	private LocalDateTime interviewDate;
+
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDate interviewDate;
 	private Boolean interestedToJoin;
 	private Boolean bond2Years;
 	private Boolean bond5Years;
@@ -169,7 +173,7 @@ public class Candidates {
 		return investigation;
 	}
 
-	public LocalDateTime getInterviewDate() {
+	public LocalDate getInterviewDate() {
 		return interviewDate;
 	}
 
@@ -329,7 +333,7 @@ public class Candidates {
 		this.investigation = investigation;
 	}
 
-	public void setInterviewDate(LocalDateTime interviewDate) {
+	public void setInterviewDate(LocalDate interviewDate) {
 		this.interviewDate = interviewDate;
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.CandidateFacilities;
+import com.remark_herlan.hr_app.model.Candidates;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 import com.remark_herlan.hr_app.service.CandidateFacilitiesService;
 
@@ -40,6 +41,12 @@ public class CandidateFacilitiesController {
 	public ResponseInfo<Optional<CandidateFacilities>> getMethod(@PathVariable Long id)
 			throws InternalServerException, DataNotFoundException {
 		return service.getInfo(id);
+	}
+
+	@PostMapping("byCandidate/{type}")
+	public ResponseInfo<CandidateFacilities> getByCandidateMethod(@RequestBody Candidates candidate, @PathVariable String type)
+			throws InternalServerException, DataNotFoundException {
+		return service.getInfoByCandidate(candidate, type);
 	}
 
 	@PostMapping("/add")

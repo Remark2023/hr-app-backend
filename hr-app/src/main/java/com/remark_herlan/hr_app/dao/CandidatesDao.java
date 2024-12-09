@@ -1,12 +1,17 @@
 package com.remark_herlan.hr_app.dao;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.remark_herlan.hr_app.model.Candidates;
-import java.util.List;
-import java.time.LocalDateTime;
 
+import jakarta.transaction.Transactional;
 
 /**
  * author: Naimul Hassan
@@ -18,7 +23,18 @@ import java.time.LocalDateTime;
 public interface CandidatesDao extends JpaRepository<Candidates, Long> {
 
 	List<Candidates> findByFullName(String fullName);
-	
-	List<Candidates> findByInterviewDate(LocalDateTime interviewDate);
+
+	List<Candidates> findByInterviewDate(LocalDate interviewDate);
+
+	@Modifying
+	@Transactional
+	@Query("UPDATE Candidates can " + "SET can.noticePeriods = :noticePeriods, " + "can.doj = :doj, "
+			+ "can.probationPeriod = :probationPeriod, " + "can.investigation = :investigation, "
+			+ "can.hrNotes = :hrNotes, " + "can.managementComment = :managementComment "
+			+ "WHERE can.candidateNumber = :candidateNumber")
+	int updateInfoById(@Param("noticePeriods") String noticePeriods, @Param("doj") String doj,
+			@Param("probationPeriod") String probationPeriod, @Param("investigation") String investigation,
+			@Param("hrNotes") String hrNotes, @Param("managementComment") String managementComment,
+			@Param("candidateNumber") Long candidateNumber);
 
 }

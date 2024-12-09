@@ -1,5 +1,6 @@
 package com.remark_herlan.hr_app.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,9 @@ public class CandidateEvaluationService {
 
 	@Autowired
 	CandidateEvaluationDao dao;
+	
+	@Autowired
+	GetSequenceService sequenceService;
 
 	public ResponseInfo<List<CandidateEvaluation>> getAllInfos() throws InternalServerException, DataNotFoundException {
 		ResponseInfo<List<CandidateEvaluation>> responseInfo = new ResponseInfo<>();
@@ -85,6 +89,13 @@ public class CandidateEvaluationService {
 				throw new AuthorizationException(
 						"Access denied: Only interviewers are allowed to perform this action.");
 			}
+
+			Long sequence = sequenceService.getSequenceId("candidate_number", "candidates");
+			LocalDateTime creationDate = LocalDateTime.now();
+
+			candidateEvaluation.setId(sequence);
+			candidateEvaluation.setSubmittedDate(creationDate);
+			candidateEvaluation.setSubmittedBy(username);
 
 			dao.save(candidateEvaluation);
 

@@ -23,7 +23,7 @@ public class CandidateEvaluation {
 	private Long id;
 
 	@Column(name = "submitted_by", nullable = false)
-	private Long submittedBy;
+	private String submittedBy;
 
 	private LocalDateTime submittedDate;
 	private Double attireBodyLanguage;
@@ -44,7 +44,7 @@ public class CandidateEvaluation {
 		return id;
 	}
 
-	public Long getSubmittedBy() {
+	public String getSubmittedBy() {
 		return submittedBy;
 	}
 
@@ -92,7 +92,7 @@ public class CandidateEvaluation {
 		this.id = id;
 	}
 
-	public void setSubmittedBy(Long submittedBy) {
+	public void setSubmittedBy(String submittedBy) {
 		this.submittedBy = submittedBy;
 	}
 
