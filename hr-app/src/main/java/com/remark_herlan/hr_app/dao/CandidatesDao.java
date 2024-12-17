@@ -26,6 +26,8 @@ public interface CandidatesDao extends JpaRepository<Candidates, Long> {
 
 	List<Candidates> findByInterviewDate(LocalDate interviewDate);
 
+	List<Candidates> findByNidNumber(String nidNumber);
+
 	@Modifying
 	@Transactional
 	@Query("UPDATE Candidates can " + "SET can.noticePeriods = :noticePeriods, " + "can.doj = :doj, "

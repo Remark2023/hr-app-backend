@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.remark_herlan.hr_app.dao.CandidateFacilitiesDao;
+import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.CandidateFacilities;
@@ -113,12 +114,16 @@ public class CandidateFacilitiesService {
 
 	}
 
-	public ResponseInfo<CandidateFacilities> saveInfo(CandidateFacilities candidateFacilities)
-			throws InternalServerException {
+	public ResponseInfo<CandidateFacilities> saveInfo(CandidateFacilities candidateFacilities, String role)
+			throws InternalServerException, AuthorizationException {
 
 		ResponseInfo<CandidateFacilities> responseInfo = new ResponseInfo<>();
 
 		try {
+			if (!candidateFacilities.getFacilityType().equals("CURRENT") && !role.equals("HR")) {
+				throw new AuthorizationException("Access denied: Only HR are allowed to perform this action.");
+			}
+
 			Long sequence = sequenceService.getSequenceId("id", "candidate_facilities");
 			if (candidateFacilities.getId() == null) {
 				candidateFacilities.setId(sequence);
@@ -131,6 +136,8 @@ public class CandidateFacilitiesService {
 			responseInfo.setData(response);
 
 			return responseInfo;
+		} catch (AuthorizationException e) {
+			throw e;
 		} catch (Exception ex) {
 			throw new InternalServerException("An unexpected error occurred: " + ex.getMessage());
 		}

@@ -84,7 +84,7 @@ public class CandidatesService {
 		try {
 			List<Candidates> response = dao.findByFullName(name);
 
-			if (response == null) {
+			if (response.isEmpty()) {
 				throw new DataNotFoundException("No data found!");
 			}
 
@@ -108,7 +108,31 @@ public class CandidatesService {
 		try {
 			List<Candidates> response = dao.findByInterviewDate(date);
 
-			if (response == null) {
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(response);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			// Explicitly handle known exception
+			throw e; // Re-throw to let a higher-level handler manage it
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
+	public ResponseInfo<List<Candidates>> getInfoByNid(String nidNumber)
+			throws DataNotFoundException, InternalServerException {
+		ResponseInfo<List<Candidates>> responseInfo = new ResponseInfo<>();
+
+		try {
+			List<Candidates> response = dao.findByNidNumber(nidNumber);
+
+			if (response.isEmpty()) {
 				throw new DataNotFoundException("No data found!");
 			}
 
@@ -150,9 +174,9 @@ public class CandidatesService {
 		ResponseInfo<Integer> responseInfo = new ResponseInfo<>();
 
 		try {
-			int response = dao.updateInfoById(candidate.getNoticePeriods(), candidate.getDoj(), candidate.getProbationPeriod(),
-					candidate.getInvestigation(), candidate.getHrNotes(), candidate.getManagementComment(),
-					candidate.getCandidateNumber());
+			int response = dao.updateInfoById(candidate.getNoticePeriods(), candidate.getDoj(),
+					candidate.getProbationPeriod(), candidate.getInvestigation(), candidate.getHrNotes(),
+					candidate.getManagementComment(), candidate.getCandidateNumber());
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully updated!");

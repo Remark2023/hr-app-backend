@@ -26,7 +26,7 @@ public class CandidateEvaluationService {
 
 	@Autowired
 	CandidateEvaluationDao dao;
-	
+
 	@Autowired
 	GetSequenceService sequenceService;
 
@@ -85,17 +85,20 @@ public class CandidateEvaluationService {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
-			if (!"INTERVIEWER".equals(role)) {
-				throw new AuthorizationException(
-						"Access denied: Only interviewers are allowed to perform this action.");
+//			if (!"INTERVIEWER".equals(role)) {
+//				throw new AuthorizationException(
+//						"Access denied: Only interviewers are allowed to perform this action.");
+//			}
+
+			Long sequence = sequenceService.getSequenceId("id", "candidate_evaluation");
+			if (candidateEvaluation.getId() == null) {
+				LocalDateTime creationDate = LocalDateTime.now();
+				
+				candidateEvaluation.setId(sequence);
+				candidateEvaluation.setSubmittedDate(creationDate);
+				candidateEvaluation.setSubmittedBy(username);
 			}
 
-			Long sequence = sequenceService.getSequenceId("candidate_number", "candidates");
-			LocalDateTime creationDate = LocalDateTime.now();
-
-			candidateEvaluation.setId(sequence);
-			candidateEvaluation.setSubmittedDate(creationDate);
-			candidateEvaluation.setSubmittedBy(username);
 
 			dao.save(candidateEvaluation);
 
@@ -104,8 +107,6 @@ public class CandidateEvaluationService {
 			responseInfo.setData("Candidate evaluation saved successfully.");
 
 			return responseInfo;
-		} catch (AuthorizationException authEx) {
-			throw authEx;
 		} catch (Exception ex) {
 			throw new InternalServerException("An unexpected error occurred: " + ex.getMessage());
 		}

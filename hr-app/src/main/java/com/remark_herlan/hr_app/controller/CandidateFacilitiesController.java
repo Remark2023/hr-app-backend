@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.CandidateFacilities;
@@ -44,15 +46,15 @@ public class CandidateFacilitiesController {
 	}
 
 	@PostMapping("byCandidate/{type}")
-	public ResponseInfo<CandidateFacilities> getByCandidateMethod(@RequestBody Candidates candidate, @PathVariable String type)
-			throws InternalServerException, DataNotFoundException {
+	public ResponseInfo<CandidateFacilities> getByCandidateMethod(@RequestBody Candidates candidate,
+			@PathVariable String type) throws InternalServerException, DataNotFoundException {
 		return service.getInfoByCandidate(candidate, type);
 	}
 
 	@PostMapping("/add")
-	public ResponseInfo<CandidateFacilities> postMethod(@RequestBody CandidateFacilities facility)
-			throws InternalServerException {
-		return service.saveInfo(facility);
+	public ResponseInfo<CandidateFacilities> postMethod(@RequestBody CandidateFacilities facility,
+			@RequestAttribute("role") String role) throws InternalServerException, AuthorizationException {
+		return service.saveInfo(facility, role);
 	}
 
 }

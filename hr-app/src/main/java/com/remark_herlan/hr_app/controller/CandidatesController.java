@@ -52,6 +52,12 @@ public class CandidatesController {
 		return service.getInfoByDate(date);
 	}
 
+	@GetMapping("/byNid")
+	public ResponseInfo<List<Candidates>> getByNidMethod(@RequestParam(value = "nid") String nid)
+			throws InternalServerException, DataNotFoundException {
+		return service.getInfoByNid(nid);
+	}
+
 	@PostMapping("/add")
 	public ResponseInfo<Candidates> postMethod(@RequestBody Candidates candidates)
 			throws InternalServerException, DataNotFoundException {
