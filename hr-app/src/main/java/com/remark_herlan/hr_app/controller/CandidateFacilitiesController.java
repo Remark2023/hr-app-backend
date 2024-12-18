@@ -53,7 +53,8 @@ public class CandidateFacilitiesController {
 
 	@PostMapping("/add")
 	public ResponseInfo<CandidateFacilities> postMethod(@RequestBody CandidateFacilities facility,
-			@RequestAttribute("role") String role) throws InternalServerException, AuthorizationException {
+			@RequestAttribute(name = "role", required = false) String role)
+			throws InternalServerException, AuthorizationException {
 		return service.saveInfo(facility, role);
 	}
 

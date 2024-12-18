@@ -65,7 +65,7 @@ public class SecurityConfig {
 //		configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Add allowed origins
 		configuration.setAllowedOrigins(Arrays.asList(
 	            "http://localhost:8082",
-	            "http://182.160.114.100:3000/"
+	            "http://182.160.114.100:8082/"
 	        )); // allow multiple origins
 //		configuration.setAllowedOrigins(Arrays.asList("*")); // Allow all origins, but it is suggested to not use for security purpose
 		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Add allowed methods
