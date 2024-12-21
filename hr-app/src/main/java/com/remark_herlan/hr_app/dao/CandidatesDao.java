@@ -39,4 +39,9 @@ public interface CandidatesDao extends JpaRepository<Candidates, Long> {
 			@Param("hrNotes") String hrNotes, @Param("managementComment") String managementComment,
 			@Param("candidateNumber") Long candidateNumber);
 
+	@Modifying
+	@Transactional
+	@Query("UPDATE Candidates can SET can.status = :status WHERE can.candidateNumber = :candidateNumber")
+	int updateStatusById(@Param("status") String status, @Param("candidateNumber") Long candidateNumber);
+
 }

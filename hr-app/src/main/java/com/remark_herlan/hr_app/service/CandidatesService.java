@@ -187,6 +187,22 @@ public class CandidatesService {
 			throw new InternalServerException(e.getMessage());
 		}
 	}
+	
+	public ResponseInfo<Integer> updateStatusByCandidateNumber(Candidates candidate) throws InternalServerException {
+		ResponseInfo<Integer> responseInfo = new ResponseInfo<>();
+		
+		try {
+			int response = dao.updateStatusById(candidate.getStatus(), candidate.getCandidateNumber());
+			
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Status updated!");
+			responseInfo.setData(response);
+			
+			return responseInfo;
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
 
 	public ResponseInfo<String> deleteInfo(Long id) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();

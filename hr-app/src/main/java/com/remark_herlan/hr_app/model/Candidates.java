@@ -46,6 +46,7 @@ public class Candidates {
 	private String doj;
 	private String probationPeriod;
 	private String investigation;
+	private String status;
 
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDate interviewDate;
@@ -387,6 +388,14 @@ public class Candidates {
 
 	public void setEvaluationInfo(List<CandidateEvaluation> evaluationInfo) {
 		this.evaluationInfo = evaluationInfo;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.Candidates;
@@ -65,9 +67,25 @@ public class CandidatesController {
 	}
 
 	@PutMapping("/update/byNumber")
-	public ResponseInfo<Integer> updateMethod(@RequestBody Candidates candidates)
-			throws InternalServerException, DataNotFoundException {
+	public ResponseInfo<Integer> updateMethod(@RequestBody Candidates candidates,
+			@RequestAttribute(name = "role", required = false) String role)
+			throws InternalServerException, DataNotFoundException, AuthorizationException {
+		if (role == null || !role.equals("HR")) {
+			throw new AuthorizationException("Only HR is allowed!");
+		}
+
 		return service.updateInfoByCandidateNumber(candidates);
+	}
+
+	@PutMapping("/status/update")
+	public ResponseInfo<Integer> updateStatusMethod(@RequestBody Candidates candidates,
+			@RequestAttribute(name = "role", required = false) String role)
+			throws InternalServerException, DataNotFoundException, AuthorizationException {
+		if (role == null || !role.equals("HR")) {
+			throw new AuthorizationException("Only HR is allowed!");
+		}
+
+		return service.updateStatusByCandidateNumber(candidates);
 	}
 
 }
