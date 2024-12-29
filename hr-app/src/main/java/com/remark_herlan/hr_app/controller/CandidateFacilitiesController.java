@@ -18,6 +18,7 @@ import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.CandidateFacilities;
 import com.remark_herlan.hr_app.model.Candidates;
 import com.remark_herlan.hr_app.model.ResponseInfo;
+import com.remark_herlan.hr_app.model.Roles;
 import com.remark_herlan.hr_app.service.CandidateFacilitiesService;
 
 /**
@@ -53,9 +54,9 @@ public class CandidateFacilitiesController {
 
 	@PostMapping("/add")
 	public ResponseInfo<CandidateFacilities> postMethod(@RequestBody CandidateFacilities facility,
-			@RequestAttribute(name = "role", required = false) String role)
+			@RequestAttribute(name = "roles", required = false) List<Roles> roles)
 			throws InternalServerException, AuthorizationException {
-		return service.saveInfo(facility, role);
+		return service.saveInfo(facility, roles);
 	}
 
 }

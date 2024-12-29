@@ -1,6 +1,7 @@
 package com.remark_herlan.hr_app.secutiry.auth.jwt;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.remark_herlan.hr_app.dao.UsersDao;
+import com.remark_herlan.hr_app.model.Roles;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,8 +44,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			String username = jwtTokenUtil.extractUsername(token);
 			request.setAttribute("username", username);
 
-			String userRole = dao.findByUsername(username).getRole().getTitle();
-			request.setAttribute("role", userRole);
+			List<Roles> userRoles = dao.findByUsername(username).getRoles();
+			request.setAttribute("roles", userRoles);
 
 			SecurityContextHolder.getContext().setAuthentication(jwtTokenUtil.getAuthentication(token));
 		}

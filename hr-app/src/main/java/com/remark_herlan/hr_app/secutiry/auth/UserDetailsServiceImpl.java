@@ -1,6 +1,7 @@
 package com.remark_herlan.hr_app.secutiry.auth;
 
-import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,7 +31,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if (user == null || !"APPROVED".equals(user.getStatus())) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
+
+		// Map the user's roles into a list of SimpleGrantedAuthority
+		List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
+				.map(role -> new SimpleGrantedAuthority(role.getTitle())).collect(Collectors.toList());
+
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-				Collections.singleton(new SimpleGrantedAuthority(user.getRole().getTitle())));
+				authorities);
 	}
+
 }

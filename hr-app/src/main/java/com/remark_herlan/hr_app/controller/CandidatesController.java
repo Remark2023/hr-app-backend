@@ -21,6 +21,7 @@ import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.Candidates;
 import com.remark_herlan.hr_app.model.ResponseInfo;
+import com.remark_herlan.hr_app.model.Roles;
 import com.remark_herlan.hr_app.service.CandidatesService;
 
 /**
@@ -68,10 +69,10 @@ public class CandidatesController {
 
 	@PutMapping("/update/byNumber")
 	public ResponseInfo<Integer> updateMethod(@RequestBody Candidates candidates,
-			@RequestAttribute(name = "role", required = false) String role)
+			@RequestAttribute(name = "roles", required = false) List<Roles> roles)
 			throws InternalServerException, DataNotFoundException, AuthorizationException {
-		if (role == null || !role.equals("HR")) {
-			throw new AuthorizationException("Only HR is allowed!");
+		if (roles == null || roles.stream().noneMatch(role -> "HR".equals(role.getTitle()))) {
+			throw new AuthorizationException("Access denied: Only HR is allowed to perform this action.");
 		}
 
 		return service.updateInfoByCandidateNumber(candidates);
@@ -79,10 +80,11 @@ public class CandidatesController {
 
 	@PutMapping("/status/update")
 	public ResponseInfo<Integer> updateStatusMethod(@RequestBody Candidates candidates,
-			@RequestAttribute(name = "role", required = false) String role)
+			@RequestAttribute(name = "roles", required = false) List<Roles> roles)
 			throws InternalServerException, DataNotFoundException, AuthorizationException {
-		if (role == null || !role.equals("HR")) {
-			throw new AuthorizationException("Only HR is allowed!");
+
+		if (roles == null || roles.stream().noneMatch(role -> "HR".equals(role.getTitle()))) {
+			throw new AuthorizationException("Access denied: Only HR is allowed to perform this action.");
 		}
 
 		return service.updateStatusByCandidateNumber(candidates);

@@ -79,26 +79,20 @@ public class CandidateEvaluationService {
 
 	}
 
-	public ResponseInfo<String> saveInfo(CandidateEvaluation candidateEvaluation, String username, String role)
+	public ResponseInfo<String> saveInfo(CandidateEvaluation candidateEvaluation, String username)
 			throws InternalServerException, AuthorizationException {
 
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
-//			if (!"INTERVIEWER".equals(role)) {
-//				throw new AuthorizationException(
-//						"Access denied: Only interviewers are allowed to perform this action.");
-//			}
-
 			Long sequence = sequenceService.getSequenceId("id", "candidate_evaluation");
 			if (candidateEvaluation.getId() == null) {
 				LocalDateTime creationDate = LocalDateTime.now();
-				
+
 				candidateEvaluation.setId(sequence);
 				candidateEvaluation.setSubmittedDate(creationDate);
 				candidateEvaluation.setSubmittedBy(username);
 			}
-
 
 			dao.save(candidateEvaluation);
 

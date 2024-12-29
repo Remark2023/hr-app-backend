@@ -15,6 +15,9 @@ import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.CandidateFacilities;
 import com.remark_herlan.hr_app.model.Candidates;
 import com.remark_herlan.hr_app.model.ResponseInfo;
+import com.remark_herlan.hr_app.model.Roles;
+
+import utils.CheckAuthorization;
 
 /**
  * author: Naimul Hassan
@@ -114,18 +117,20 @@ public class CandidateFacilitiesService {
 
 	}
 
-	public ResponseInfo<CandidateFacilities> saveInfo(CandidateFacilities candidateFacilities, String role)
+	public ResponseInfo<CandidateFacilities> saveInfo(CandidateFacilities candidateFacilities, List<Roles> roles)
 			throws InternalServerException, AuthorizationException {
 
 		ResponseInfo<CandidateFacilities> responseInfo = new ResponseInfo<>();
 
 		try {
-			if (!candidateFacilities.getFacilityType().equals("CURRENT") && !role.equals("HR")) {
+			boolean isHR = CheckAuthorization.checkHrAuth(roles);
+			
+			if (!"CURRENT".equals(candidateFacilities.getFacilityType()) && !isHR) {
 				throw new AuthorizationException("Access denied: Only HR are allowed to perform this action.");
 			}
 
-			Long sequence = sequenceService.getSequenceId("id", "candidate_facilities");
 			if (candidateFacilities.getId() == null) {
+				Long sequence = sequenceService.getSequenceId("id", "candidate_facilities");
 				candidateFacilities.setId(sequence);
 			}
 

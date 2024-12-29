@@ -46,9 +46,8 @@ public class CandidateEvaluationController {
 
 	@PostMapping("/add")
 	public ResponseInfo<String> postMethod(@RequestBody CandidateEvaluation evaluation,
-			@RequestAttribute("username") String username, @RequestAttribute("role") String role)
-			throws InternalServerException, AuthorizationException {
-		return service.saveInfo(evaluation, username, role);
+			@RequestAttribute("username") String username) throws InternalServerException, AuthorizationException {
+		return service.saveInfo(evaluation, username);
 	}
 
 }

@@ -1,7 +1,9 @@
 package com.remark_herlan.hr_app.secutiry.auth.jwt;
 
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
@@ -35,8 +37,11 @@ public class JwtTokenUtil {
 	}
 
 	public String generateToken(UserDetails userDetails) {
-		return Jwts.builder().setSubject(userDetails.getUsername())
-				.claim("role", userDetails.getAuthorities().iterator().next().getAuthority()).setIssuedAt(new Date())
+
+		List<String> roles = userDetails.getAuthorities().stream().map(authority -> authority.getAuthority())
+				.collect(Collectors.toList());
+
+		return Jwts.builder().setSubject(userDetails.getUsername()).claim("roles", roles).setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.signWith(key, SignatureAlgorithm.HS512) // Use SecretKey object
 				.compact();

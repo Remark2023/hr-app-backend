@@ -1,10 +1,12 @@
 package com.remark_herlan.hr_app.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 
 /**
  * author: Naimul Hassan
@@ -24,8 +26,16 @@ public class Users {
 	private LocalDateTime activeDate;
 	private LocalDateTime inactiveDate;
 
-	@ManyToOne
-	private Roles role;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Roles> roles;
+
+	public List<Roles> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Roles> roles) {
+		this.roles = roles;
+	}
 
 	public Long getId() {
 		return id;
@@ -41,10 +51,6 @@ public class Users {
 
 	public String getStatus() {
 		return status;
-	}
-
-	public Roles getRole() {
-		return role;
 	}
 
 	public LocalDateTime getCreationDate() {
@@ -73,10 +79,6 @@ public class Users {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public void setRole(Roles role) {
-		this.role = role;
 	}
 
 	public void setCreationDate(LocalDateTime creationDate) {
