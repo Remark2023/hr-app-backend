@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.ResponseInfo;
@@ -52,6 +53,17 @@ public class UsersController {
 	@PostMapping("/add")
 	public ResponseInfo<String> postMethod(@Validated @RequestBody Users user) throws InternalServerException {
 		return service.saveInfo(user);
+	}
+
+	@GetMapping("roles")
+	public ResponseInfo<List<String>> getRolesMethod(
+			@RequestAttribute(name = "userRoles", required = false) List<String> userRoles)
+			throws DataNotFoundException, InternalServerException, AuthorizationException {
+		if (userRoles == null) {
+			throw new AuthorizationException("Access denied: No user found.");
+		}
+
+		return service.getRoles(userRoles);
 	}
 
 }

@@ -98,6 +98,28 @@ public class UsersService {
 		}
 	}
 
+	public ResponseInfo<List<String>> getRoles(List<String> userRoles)
+			throws DataNotFoundException, InternalServerException {
+		ResponseInfo<List<String>> responseInfo = new ResponseInfo<>();
+
+		try {
+			if (userRoles.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(userRoles);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			// Explicitly handle known exception
+			throw e; // Re-throw to let a higher-level handler manage it
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
 	public ResponseInfo<String> saveInfo(Users user) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 

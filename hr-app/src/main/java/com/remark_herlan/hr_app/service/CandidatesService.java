@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +36,7 @@ public class CandidatesService {
 		ResponseInfo<List<Candidates>> responseInfo = new ResponseInfo<>();
 
 		try {
-			List<Candidates> response = dao.findAll();
+			List<Candidates> response = dao.findAll(Sort.by(Sort.Direction.ASC, "candidateNumber"));
 
 			if (response.isEmpty()) {
 				throw new DataNotFoundException("No data found!");
@@ -149,6 +152,32 @@ public class CandidatesService {
 		}
 	}
 
+	public ResponseInfo<List<Candidates>> getInfoByStatus(String status, int upperLimit, int lowerLimit)
+			throws DataNotFoundException, InternalServerException {
+		ResponseInfo<List<Candidates>> responseInfo = new ResponseInfo<>();
+
+		try {
+			Pageable pageable = PageRequest.of(lowerLimit, upperLimit);
+
+			List<Candidates> response = dao.findByStatusOrderByCandidateNumberAsc(status, pageable);
+
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(response);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			// Explicitly handle known exception
+			throw e; // Re-throw to let a higher-level handler manage it
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
 	public ResponseInfo<Candidates> saveInfo(Candidates candidate) throws InternalServerException {
 		ResponseInfo<Candidates> responseInfo = new ResponseInfo<>();
 
@@ -187,17 +216,17 @@ public class CandidatesService {
 			throw new InternalServerException(e.getMessage());
 		}
 	}
-	
+
 	public ResponseInfo<Integer> updateStatusByCandidateNumber(Candidates candidate) throws InternalServerException {
 		ResponseInfo<Integer> responseInfo = new ResponseInfo<>();
-		
+
 		try {
 			int response = dao.updateStatusById(candidate.getStatus(), candidate.getCandidateNumber());
-			
+
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Status updated!");
 			responseInfo.setData(response);
-			
+
 			return responseInfo;
 		} catch (Exception e) {
 			throw new InternalServerException(e.getMessage());

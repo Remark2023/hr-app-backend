@@ -14,4 +14,6 @@ import com.remark_herlan.hr_app.model.Roles;
 @Repository
 public interface RolesDao extends JpaRepository<Roles, Long> {
 
+	Roles findByTitle(String title);
+
 }

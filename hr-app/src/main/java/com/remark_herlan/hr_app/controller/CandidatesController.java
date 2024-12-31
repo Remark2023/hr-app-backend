@@ -61,6 +61,14 @@ public class CandidatesController {
 		return service.getInfoByNid(nid);
 	}
 
+	@GetMapping("/byStatus")
+	public ResponseInfo<List<Candidates>> getByStatusMethod(@RequestParam(value = "status") String status,
+			@RequestParam(value = "upperLimit", defaultValue = "10") int upperLimit,
+			@RequestParam(value = "lowerLimit", defaultValue = "0") int lowerLimit)
+			throws InternalServerException, DataNotFoundException {
+		return service.getInfoByStatus(status, upperLimit, lowerLimit);
+	}
+
 	@PostMapping("/add")
 	public ResponseInfo<Candidates> postMethod(@RequestBody Candidates candidates)
 			throws InternalServerException, DataNotFoundException {
