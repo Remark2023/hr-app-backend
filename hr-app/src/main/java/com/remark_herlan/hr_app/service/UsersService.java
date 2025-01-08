@@ -98,6 +98,29 @@ public class UsersService {
 		}
 	}
 
+	public ResponseInfo<List<Users>> getInfoByStatus(String status)
+			throws DataNotFoundException, InternalServerException {
+		ResponseInfo<List<Users>> responseInfo = new ResponseInfo<>();
+
+		try {
+			List<Users> response = dao.findByStatus(status);
+
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(response);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			throw e; 
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
 	public ResponseInfo<List<String>> getRoles(List<String> userRoles)
 			throws DataNotFoundException, InternalServerException {
 		ResponseInfo<List<String>> responseInfo = new ResponseInfo<>();
@@ -124,14 +147,32 @@ public class UsersService {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
-			Long sequence = sequenceService.getSequenceId("id", "users");
-			user.setId(sequence);
+			if (user.getId() == null) {
+				Long sequence = sequenceService.getSequenceId("id", "users");
+				user.setId(sequence);
+			}
 
 			dao.save(user);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully added!");
 			responseInfo.setData(HttpStatus.OK.name());
+
+			return responseInfo;
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
+	public ResponseInfo<Integer> updateSignupStatus(Users user) throws InternalServerException {
+		ResponseInfo<Integer> responseInfo = new ResponseInfo<>();
+
+		try {
+			int response = dao.updateStatusById(user.getStatus(), user.getId());
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Status updated!");
+			responseInfo.setData(response);
 
 			return responseInfo;
 		} catch (Exception e) {

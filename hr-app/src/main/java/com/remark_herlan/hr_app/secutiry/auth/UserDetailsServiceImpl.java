@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.remark_herlan.hr_app.dao.UsersDao;
+import com.remark_herlan.hr_app.exceptions.UserFoundButPendingException;
+import com.remark_herlan.hr_app.exceptions.UserNotFoundException;
 import com.remark_herlan.hr_app.model.Users;
 
 /**
@@ -26,10 +28,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private UsersDao usersDao;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username)
+			throws UsernameNotFoundException, UserFoundButPendingException, UserNotFoundException {
 		Users user = usersDao.findByUsername(username);
-		if (user == null || !"APPROVED".equals(user.getStatus())) {
-			throw new UsernameNotFoundException("User not found with username: " + username);
+		if (user == null) {
+			throw new UserNotFoundException("User not found with username: " + username);
+		}
+
+		if ("PENDING".equals(user.getStatus())) {
+			throw new UserFoundButPendingException(username + " is registered but status is PENDING");
 		}
 
 		// Map the user's roles into a list of SimpleGrantedAuthority

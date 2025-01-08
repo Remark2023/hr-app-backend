@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.model.ResponseInfo;
+import com.remark_herlan.hr_app.model.Roles;
 import com.remark_herlan.hr_app.model.Users;
 import com.remark_herlan.hr_app.service.UsersService;
 
@@ -38,6 +40,12 @@ public class UsersController {
 		return service.getAllInfos();
 	}
 
+	@GetMapping("/byStatus/{status}")
+	public ResponseInfo<List<Users>> getByStatusMethod(@PathVariable String status)
+			throws DataNotFoundException, InternalServerException {
+		return service.getInfoByStatus(status);
+	}
+
 	@GetMapping("/{id}")
 	public ResponseInfo<Optional<Users>> getMethod(@PathVariable Long id)
 			throws DataNotFoundException, InternalServerException {
@@ -53,6 +61,18 @@ public class UsersController {
 	@PostMapping("/add")
 	public ResponseInfo<String> postMethod(@Validated @RequestBody Users user) throws InternalServerException {
 		return service.saveInfo(user);
+	}
+
+	@PutMapping("/status/update")
+	public ResponseInfo<Integer> updateStatusMethod(@RequestBody Users user,
+			@RequestAttribute(name = "roles", required = false) List<Roles> roles)
+			throws InternalServerException, DataNotFoundException, AuthorizationException {
+
+		if (roles == null || roles.stream().noneMatch(role -> "ADMIN".equals(role.getTitle()))) {
+			throw new AuthorizationException("Access denied: Only SUPER ADMIN is allowed to perform this action.");
+		}
+
+		return service.updateSignupStatus(user);
 	}
 
 	@GetMapping("roles")

@@ -41,6 +41,12 @@ public class RolesController {
 		return service.getInfo(id);
 	}
 
+	@GetMapping("/byTitle/{title}")
+	public ResponseInfo<Optional<Roles>> getByTitleMethod(@PathVariable String title)
+			throws InternalServerException, DataNotFoundException {
+		return service.getInfoByTitle(title);
+	}
+
 	@PostMapping("/add")
 	public ResponseInfo<String> postMethod(@RequestBody Roles role) throws InternalServerException {
 		return service.saveInfo(role);

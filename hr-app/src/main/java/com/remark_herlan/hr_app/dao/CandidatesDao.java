@@ -29,7 +29,7 @@ public interface CandidatesDao extends JpaRepository<Candidates, Long> {
 
 	List<Candidates> findByNidNumber(String nidNumber);
 
-	List<Candidates> findByStatusOrderByCandidateNumberAsc(String status, Pageable pageable);
+	List<Candidates> findByStatusOrderByCandidateNumberDesc(String status, Pageable pageable);
 
 	@Modifying
 	@Transactional

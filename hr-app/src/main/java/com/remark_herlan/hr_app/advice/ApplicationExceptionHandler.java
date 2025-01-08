@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
+import com.remark_herlan.hr_app.exceptions.UserFoundButPendingException;
+import com.remark_herlan.hr_app.exceptions.UserNotFoundException;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 
 /**
@@ -54,8 +56,8 @@ public class ApplicationExceptionHandler {
 		return new ResponseEntity<>(responseInfo, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(UsernameNotFoundException.class)
-	public ResponseEntity<ResponseInfo<Map<String, String>>> handleUsernameNotFoundException(
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ResponseInfo<Map<String, String>>> handleUserNotFoundException(
 			UsernameNotFoundException ex) {
 		Map<String, String> errorMap = new HashMap<>();
 		errorMap.put("error", "Username not found");
@@ -64,6 +66,21 @@ public class ApplicationExceptionHandler {
 		ResponseInfo<Map<String, String>> responseInfo = new ResponseInfo<>();
 		responseInfo.setStatusCode(HttpStatus.NOT_FOUND.value());
 		responseInfo.setMessage("Username Not Found");
+		responseInfo.setData(errorMap);
+
+		return new ResponseEntity<>(responseInfo, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(UserFoundButPendingException.class)
+	public ResponseEntity<ResponseInfo<Map<String, String>>> handleUserFoundButPendingException(
+			UsernameNotFoundException ex) {
+		Map<String, String> errorMap = new HashMap<>();
+		errorMap.put("error", "User status is PENDING");
+		errorMap.put("message", ex.getMessage());
+
+		ResponseInfo<Map<String, String>> responseInfo = new ResponseInfo<>();
+		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
+		responseInfo.setMessage("Please contact ADMIN to approve your registration!");
 		responseInfo.setData(errorMap);
 
 		return new ResponseEntity<>(responseInfo, HttpStatus.NOT_FOUND);

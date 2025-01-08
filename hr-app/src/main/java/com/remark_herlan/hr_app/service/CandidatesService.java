@@ -159,7 +159,7 @@ public class CandidatesService {
 		try {
 			Pageable pageable = PageRequest.of(lowerLimit, upperLimit);
 
-			List<Candidates> response = dao.findByStatusOrderByCandidateNumberAsc(status, pageable);
+			List<Candidates> response = dao.findByStatusOrderByCandidateNumberDesc(status, pageable);
 
 			if (response.isEmpty()) {
 				throw new DataNotFoundException("No data found!");

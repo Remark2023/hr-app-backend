@@ -76,12 +76,38 @@ public class RolesService {
 
 	}
 
+	public ResponseInfo<Optional<Roles>> getInfoByTitle(String roleTitle)
+			throws InternalServerException, DataNotFoundException {
+		ResponseInfo<Optional<Roles>> responseInfo = new ResponseInfo<>();
+
+		try {
+			Optional<Roles> response = dao.findByTitle(roleTitle);
+
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(response);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+
+	}
+
 	public ResponseInfo<String> saveInfo(Roles role) throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
-			Long sequence = sequenceService.getSequenceId("id", "roles");
-			role.setId(sequence);
+			if (role.getId() == null) {
+				Long sequence = sequenceService.getSequenceId("id", "roles");
+				role.setId(sequence);
+			}
 
 			dao.save(role);
 
