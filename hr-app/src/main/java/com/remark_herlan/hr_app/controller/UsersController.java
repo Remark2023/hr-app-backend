@@ -59,7 +59,7 @@ public class UsersController {
 	}
 
 	@PostMapping("/add")
-	public ResponseInfo<String> postMethod(@Validated @RequestBody Users user) throws InternalServerException {
+	public ResponseInfo<Users> postMethod(@Validated @RequestBody Users user) throws InternalServerException {
 		return service.saveInfo(user);
 	}
 

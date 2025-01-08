@@ -115,7 +115,7 @@ public class UsersService {
 
 			return responseInfo;
 		} catch (DataNotFoundException e) {
-			throw e; 
+			throw e;
 		} catch (Exception e) {
 			throw new InternalServerException(e.getMessage());
 		}
@@ -143,8 +143,8 @@ public class UsersService {
 		}
 	}
 
-	public ResponseInfo<String> saveInfo(Users user) throws InternalServerException {
-		ResponseInfo<String> responseInfo = new ResponseInfo<>();
+	public ResponseInfo<Users> saveInfo(Users user) throws InternalServerException {
+		ResponseInfo<Users> responseInfo = new ResponseInfo<>();
 
 		try {
 			if (user.getId() == null) {
@@ -152,11 +152,11 @@ public class UsersService {
 				user.setId(sequence);
 			}
 
-			dao.save(user);
+			Users response = dao.save(user);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
 			responseInfo.setMessage("Successfully added!");
-			responseInfo.setData(HttpStatus.OK.name());
+			responseInfo.setData(response);
 
 			return responseInfo;
 		} catch (Exception e) {

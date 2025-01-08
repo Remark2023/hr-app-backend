@@ -50,9 +50,9 @@ public class Employee {
 		return endDate;
 	}
 
-	public Users getUser() {
-		return user;
-	}
+//	public Users getUser() {
+//		return user;
+//	}
 
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;

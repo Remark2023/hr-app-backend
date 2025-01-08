@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 
 /**
  * author: Naimul Hassan
@@ -28,6 +29,17 @@ public class Users {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Roles> roles;
+
+	@OneToOne(mappedBy = "user")
+	private Employee employee;
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
 
 	public List<Roles> getRoles() {
 		return roles;

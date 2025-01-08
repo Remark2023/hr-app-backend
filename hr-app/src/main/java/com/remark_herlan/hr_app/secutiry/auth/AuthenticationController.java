@@ -62,7 +62,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/signup")
-	public ResponseInfo<String> registerUser(@RequestBody Users user) throws InternalServerException {
+	public ResponseInfo<Users> registerUser(@RequestBody Users user) throws InternalServerException {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
 		return usersService.saveInfo(user);
