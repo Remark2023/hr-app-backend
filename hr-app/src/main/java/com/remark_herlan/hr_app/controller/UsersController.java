@@ -53,7 +53,13 @@ public class UsersController {
 	}
 
 	@GetMapping("get/byUsername")
-	public ResponseInfo<Users> getByNameMethod(@RequestAttribute("username") String username)
+	public ResponseInfo<Users> getLoggedUserMethod(@RequestAttribute("username") String username)
+			throws DataNotFoundException, InternalServerException {
+		return service.getInfoByUsername(username);
+	}
+
+	@GetMapping("byUsername/{username}")
+	public ResponseInfo<Users> getByUsernameMethod(@PathVariable("username") String username)
 			throws DataNotFoundException, InternalServerException {
 		return service.getInfoByUsername(username);
 	}

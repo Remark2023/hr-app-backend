@@ -3,6 +3,7 @@ package com.remark_herlan.hr_app.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -20,9 +21,16 @@ public class Users {
 
 	@Id
 	private Long id;
+	
+	@Column(nullable = false, unique = true)
 	private String username;
+	
+	@Column(nullable = false)
 	private String password;
-	private String status;
+	
+	@Column(nullable = false)
+	private String status = "PENDING";
+	
 	private LocalDateTime creationDate = LocalDateTime.now();
 	private LocalDateTime activeDate;
 	private LocalDateTime inactiveDate;
