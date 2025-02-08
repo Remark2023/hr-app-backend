@@ -46,6 +46,12 @@ public class UsersController {
 		return service.getInfoByStatus(status);
 	}
 
+	@GetMapping("/byRole/{role}")
+	public ResponseInfo<List<Users>> getByRoleMethod(@PathVariable String role)
+			throws DataNotFoundException, InternalServerException {
+		return service.getInfoByRole(role);
+	}
+
 	@GetMapping("/{id}")
 	public ResponseInfo<Optional<Users>> getMethod(@PathVariable Long id)
 			throws DataNotFoundException, InternalServerException {

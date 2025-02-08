@@ -121,6 +121,28 @@ public class UsersService {
 		}
 	}
 
+	public ResponseInfo<List<Users>> getInfoByRole(String role) throws DataNotFoundException, InternalServerException {
+		ResponseInfo<List<Users>> responseInfo = new ResponseInfo<>();
+
+		try {
+			List<Users> response = dao.findByRoleTitle(role);
+
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(response);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
 	public ResponseInfo<List<String>> getRoles(List<String> userRoles)
 			throws DataNotFoundException, InternalServerException {
 		ResponseInfo<List<String>> responseInfo = new ResponseInfo<>();

@@ -27,6 +27,9 @@ public interface UsersDao extends JpaRepository<Users, Long> {
 	@Query(value = "SELECT fn_new_seq_id(:primaryKey, :tableName)", nativeQuery = true)
 	Long getNewSequenceId(@Param("primaryKey") String primaryKey, @Param("tableName") String tableName);
 	
+	@Query("SELECT u FROM Users u JOIN u.roles r WHERE r.title = :roleTitle")
+    List<Users> findByRoleTitle(@Param("roleTitle") String roleTitle);
+	
 	@Modifying
 	@Transactional
 	@Query("UPDATE Users user SET user.status = :status WHERE user.id = :id")
