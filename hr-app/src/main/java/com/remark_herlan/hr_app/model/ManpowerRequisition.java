@@ -2,6 +2,8 @@ package com.remark_herlan.hr_app.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -48,10 +50,12 @@ public class ManpowerRequisition {
 	@Column(length = 500)
 	private String additionalSkills;
 
-	private String status;
+	private String status = "PENDING";
 
 	@ManyToOne
 	private Users createdBy;
+
+	@CreationTimestamp
 	private LocalDateTime creationDate;
 
 	public LocalDateTime getCreationDate() {

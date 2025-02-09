@@ -21,7 +21,7 @@ public class ManpowerRequisitionApproval {
 	@JoinColumn(name = "approvedById", insertable = false, updatable = false)
 	private Users approvedBy;
 
-	private String status;
+	private String status = "PENDING";
 	private String remarks;
 	private LocalDateTime approvalDate;
 

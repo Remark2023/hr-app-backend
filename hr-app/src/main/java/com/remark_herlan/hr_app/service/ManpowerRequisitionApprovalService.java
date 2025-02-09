@@ -2,6 +2,7 @@ package com.remark_herlan.hr_app.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -103,30 +104,38 @@ public class ManpowerRequisitionApprovalService {
 		}
 
 	}
-	
-	public ResponseInfo<List<ManpowerRequisitionApproval>> getInfoByApprover(Users approver)
-			throws InternalServerException, DataNotFoundException {
-		ResponseInfo<List<ManpowerRequisitionApproval>> responseInfo = new ResponseInfo<>();
-		
-		try {
-			List<ManpowerRequisitionApproval> response = dao.findByApprovedBy(approver);
-			
-			if (response.isEmpty()) {
-				throw new DataNotFoundException("No data found!");
-			}
-			
-			responseInfo.setStatusCode(HttpStatus.OK.value());
-			responseInfo.setMessage("Successfully fetched!");
-			responseInfo.setData(response);
-			
-			return responseInfo;
-		} catch (DataNotFoundException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new InternalServerException(e.getMessage());
-		}
-		
+
+	public ResponseInfo<List<ManpowerRequisitionApproval>> getInfoByApprover(Users approver, String status)
+	        throws InternalServerException, DataNotFoundException {
+	    ResponseInfo<List<ManpowerRequisitionApproval>> responseInfo = new ResponseInfo<>();
+
+	    try {
+	        List<ManpowerRequisitionApproval> response = dao.findByApprovedBy(approver);
+
+	        if (response.isEmpty()) {
+	            throw new DataNotFoundException("No data found!");
+	        }
+
+	        List<ManpowerRequisitionApproval> filteredList = response.stream()
+	                .filter(c -> status.equals(c.getStatus())) // Corrected string comparison
+	                .collect(Collectors.toList());
+	        
+	        if (filteredList.isEmpty()) {
+	        	throw new DataNotFoundException("No data found!");
+	        }
+
+	        responseInfo.setStatusCode(HttpStatus.OK.value());
+	        responseInfo.setMessage("Successfully fetched!");
+	        responseInfo.setData(filteredList);
+
+	        return responseInfo;
+	    } catch (DataNotFoundException e) {
+	        throw e;
+	    } catch (Exception e) {
+	        throw new InternalServerException(e.getMessage());
+	    }
 	}
+
 
 	public ResponseInfo<String> saveInfo(ManpowerRequisitionApproval manpowerRequisitionApproval)
 			throws InternalServerException {

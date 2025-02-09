@@ -51,10 +51,10 @@ public class ManpowerRequisitionApprovalController {
 		return service.getInfoByStatus(status);
 	}
 
-	@PostMapping("/get/byApprover")
-	public ResponseInfo<List<ManpowerRequisitionApproval>> getByApproverMethod(@RequestBody Users approver)
-			throws InternalServerException, DataNotFoundException {
-		return service.getInfoByApprover(approver);
+	@PostMapping("/get/byApprover/{status}")
+	public ResponseInfo<List<ManpowerRequisitionApproval>> getByApproverMethod(@RequestBody Users approver,
+			@PathVariable String status) throws InternalServerException, DataNotFoundException {
+		return service.getInfoByApprover(approver, status);
 	}
 
 	@PostMapping("/add")
