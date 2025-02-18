@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.remark_herlan.hr_app.model.ManpowerRequisition;
 import com.remark_herlan.hr_app.model.ManpowerRequisitionApproval;
 import com.remark_herlan.hr_app.model.ManpowerRequisitionApprovalUniqueKey;
 import com.remark_herlan.hr_app.model.Users;
@@ -22,5 +23,7 @@ public interface ManpowerRequisitionApprovalDao
 	List<ManpowerRequisitionApproval> findByStatus(String status);
 
 	List<ManpowerRequisitionApproval> findByApprovedBy(Users approver);
+
+	List<ManpowerRequisitionApproval> findByApprovalOf(ManpowerRequisition approvalOf);
 
 }

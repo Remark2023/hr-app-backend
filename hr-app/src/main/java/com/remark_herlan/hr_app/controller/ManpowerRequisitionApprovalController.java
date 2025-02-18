@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
+import com.remark_herlan.hr_app.model.ManpowerRequisition;
 import com.remark_herlan.hr_app.model.ManpowerRequisitionApproval;
 import com.remark_herlan.hr_app.model.ManpowerRequisitionApprovalUniqueKey;
 import com.remark_herlan.hr_app.model.ResponseInfo;
@@ -45,8 +46,8 @@ public class ManpowerRequisitionApprovalController {
 		return service.getInfo(id);
 	}
 
-	@GetMapping("/byDepartment/{status}")
-	public ResponseInfo<List<ManpowerRequisitionApproval>> getByTitleMethod(@PathVariable String status)
+	@GetMapping("/byStatus/{status}")
+	public ResponseInfo<List<ManpowerRequisitionApproval>> getByStatusMethod(@PathVariable String status)
 			throws InternalServerException, DataNotFoundException {
 		return service.getInfoByStatus(status);
 	}
@@ -55,6 +56,13 @@ public class ManpowerRequisitionApprovalController {
 	public ResponseInfo<List<ManpowerRequisitionApproval>> getByApproverMethod(@RequestBody Users approver,
 			@PathVariable String status) throws InternalServerException, DataNotFoundException {
 		return service.getInfoByApprover(approver, status);
+	}
+
+	@PostMapping("/get/byRequisition")
+	public ResponseInfo<List<ManpowerRequisitionApproval>> getByRequisitionMethod(
+			@RequestBody ManpowerRequisition manpowerRequisition)
+			throws InternalServerException, DataNotFoundException {
+		return service.getInfoByRequisition(manpowerRequisition);
 	}
 
 	@PostMapping("/add")

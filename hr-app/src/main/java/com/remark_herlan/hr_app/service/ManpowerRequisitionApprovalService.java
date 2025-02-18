@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.remark_herlan.hr_app.dao.ManpowerRequisitionApprovalDao;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
+import com.remark_herlan.hr_app.model.ManpowerRequisition;
 import com.remark_herlan.hr_app.model.ManpowerRequisitionApproval;
 import com.remark_herlan.hr_app.model.ManpowerRequisitionApprovalUniqueKey;
 import com.remark_herlan.hr_app.model.ResponseInfo;
@@ -106,36 +107,59 @@ public class ManpowerRequisitionApprovalService {
 	}
 
 	public ResponseInfo<List<ManpowerRequisitionApproval>> getInfoByApprover(Users approver, String status)
-	        throws InternalServerException, DataNotFoundException {
-	    ResponseInfo<List<ManpowerRequisitionApproval>> responseInfo = new ResponseInfo<>();
+			throws InternalServerException, DataNotFoundException {
+		ResponseInfo<List<ManpowerRequisitionApproval>> responseInfo = new ResponseInfo<>();
 
-	    try {
-	        List<ManpowerRequisitionApproval> response = dao.findByApprovedBy(approver);
+		try {
+			List<ManpowerRequisitionApproval> response = dao.findByApprovedBy(approver);
 
-	        if (response.isEmpty()) {
-	            throw new DataNotFoundException("No data found!");
-	        }
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
 
-	        List<ManpowerRequisitionApproval> filteredList = response.stream()
-	                .filter(c -> status.equals(c.getStatus())) // Corrected string comparison
-	                .collect(Collectors.toList());
-	        
-	        if (filteredList.isEmpty()) {
-	        	throw new DataNotFoundException("No data found!");
-	        }
+			List<ManpowerRequisitionApproval> filteredList = response.stream().filter(c -> status.equals(c.getStatus())) // Corrected
+																															// string
+																															// comparison
+					.collect(Collectors.toList());
 
-	        responseInfo.setStatusCode(HttpStatus.OK.value());
-	        responseInfo.setMessage("Successfully fetched!");
-	        responseInfo.setData(filteredList);
+			if (filteredList.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
 
-	        return responseInfo;
-	    } catch (DataNotFoundException e) {
-	        throw e;
-	    } catch (Exception e) {
-	        throw new InternalServerException(e.getMessage());
-	    }
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(filteredList);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
 	}
 
+	public ResponseInfo<List<ManpowerRequisitionApproval>> getInfoByRequisition(ManpowerRequisition manpowerRequisition)
+			throws InternalServerException, DataNotFoundException {
+		ResponseInfo<List<ManpowerRequisitionApproval>> responseInfo = new ResponseInfo<>();
+
+		try {
+			List<ManpowerRequisitionApproval> response = dao.findByApprovalOf(manpowerRequisition);
+
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(response);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
 
 	public ResponseInfo<String> saveInfo(ManpowerRequisitionApproval manpowerRequisitionApproval)
 			throws InternalServerException {
