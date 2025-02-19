@@ -48,15 +48,28 @@ public class ManpowerRequisition {
 	private String computerOperationKnowledge;
 
 	@Column(length = 500)
+	private String remarks;
+
+	@Column(length = 500)
 	private String additionalSkills;
 
 	private String status = "PENDING";
+	private String completedBy;
 
 	@ManyToOne
 	private Users createdBy;
+	private LocalDateTime completionDate;
 
 	@CreationTimestamp
 	private LocalDateTime creationDate;
+
+	public LocalDateTime getCompletionDate() {
+		return completionDate;
+	}
+
+	public void setCompletionDate(LocalDateTime completionDate) {
+		this.completionDate = completionDate;
+	}
 
 	public LocalDateTime getCreationDate() {
 		return creationDate;
@@ -256,6 +269,22 @@ public class ManpowerRequisition {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getCompletedBy() {
+		return completedBy;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public void setCompletedBy(String completedBy) {
+		this.completedBy = completedBy;
 	}
 
 }

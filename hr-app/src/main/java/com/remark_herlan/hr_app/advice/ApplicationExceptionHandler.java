@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
+import com.remark_herlan.hr_app.exceptions.InvalidRequestException;
 import com.remark_herlan.hr_app.exceptions.UserFoundButPendingException;
 import com.remark_herlan.hr_app.exceptions.UserNotFoundException;
 import com.remark_herlan.hr_app.model.ResponseInfo;
@@ -57,8 +58,7 @@ public class ApplicationExceptionHandler {
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<ResponseInfo<Map<String, String>>> handleUserNotFoundException(
-			UsernameNotFoundException ex) {
+	public ResponseEntity<ResponseInfo<Map<String, String>>> handleUserNotFoundException(UsernameNotFoundException ex) {
 		Map<String, String> errorMap = new HashMap<>();
 		errorMap.put("error", "Username not found");
 		errorMap.put("message", ex.getMessage());
@@ -107,7 +107,7 @@ public class ApplicationExceptionHandler {
 		errorMap.put("message", ex.getMessage());
 
 		ResponseInfo<Map<String, String>> responseInfo = new ResponseInfo<>();
-		responseInfo.setStatusCode(HttpStatus.UNAUTHORIZED.value()); // 401 Unauthorized
+		responseInfo.setStatusCode(HttpStatus.UNAUTHORIZED.value());
 		responseInfo.setMessage(HttpStatus.UNAUTHORIZED.name());
 		responseInfo.setData(errorMap);
 
@@ -126,6 +126,20 @@ public class ApplicationExceptionHandler {
 		responseInfo.setData(errorMap);
 
 		return new ResponseEntity<>(responseInfo, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(InvalidRequestException.class)
+	public ResponseEntity<ResponseInfo<Map<String, String>>> handleInvalidRequestException(InvalidRequestException ex) {
+		Map<String, String> errorMap = new HashMap<>();
+		errorMap.put("errorMessage", ex.getMessage());
+
+		ResponseInfo<Map<String, String>> responseInfo = new ResponseInfo<>();
+
+		responseInfo.setStatusCode(HttpStatus.BAD_REQUEST.value());
+		responseInfo.setMessage(HttpStatus.BAD_REQUEST.name());
+		responseInfo.setData(errorMap);
+
+		return new ResponseEntity<>(responseInfo, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(InternalServerException.class)

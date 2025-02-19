@@ -1,5 +1,6 @@
 package com.remark_herlan.hr_app.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.remark_herlan.hr_app.dao.ManpowerRequisitionApprovalDao;
+import com.remark_herlan.hr_app.exceptions.AuthorizationException;
 import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
+import com.remark_herlan.hr_app.exceptions.InvalidRequestException;
 import com.remark_herlan.hr_app.model.ManpowerRequisition;
 import com.remark_herlan.hr_app.model.ManpowerRequisitionApproval;
 import com.remark_herlan.hr_app.model.ManpowerRequisitionApprovalUniqueKey;
@@ -155,6 +158,43 @@ public class ManpowerRequisitionApprovalService {
 
 			return responseInfo;
 		} catch (DataNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+	}
+
+	public ResponseInfo<Integer> updateApprovalStatus(String status, ManpowerRequisitionApprovalUniqueKey key,
+			String loggedUser, String remarks)
+			throws InternalServerException, DataNotFoundException, InvalidRequestException, AuthorizationException {
+		ResponseInfo<Integer> responseInfo = new ResponseInfo<>();
+
+		try {
+			ManpowerRequisitionApproval requisitionApprovalResponse = dao.findById(key)
+					.orElseThrow(() -> new DataNotFoundException("No data found!"));
+
+			if (!"PENDING".equals(requisitionApprovalResponse.getStatus())) {
+				throw new InvalidRequestException("This approval is already completed!");
+			}
+
+			if (!loggedUser.equals(requisitionApprovalResponse.getApprovedBy().getUsername())) {
+				throw new AuthorizationException("Access denied: You are not authorized for this approval!");
+			}
+
+			LocalDateTime currentDate = LocalDateTime.now();
+
+			int response = dao.updateStatusByKey(status, currentDate, remarks, key);
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Status updated!");
+			responseInfo.setData(response);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			throw e;
+		} catch (InvalidRequestException e) {
+			throw e;
+		} catch (AuthorizationException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new InternalServerException(e.getMessage());

@@ -2,6 +2,8 @@ package com.remark_herlan.hr_app.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -24,6 +26,17 @@ public class ManpowerRequisitionApproval {
 	private String status = "PENDING";
 	private String remarks;
 	private LocalDateTime approvalDate;
+
+	@CreationTimestamp
+	private LocalDateTime creationDate;
+
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
+	}
 
 	public ManpowerRequisitionApprovalUniqueKey getManpowerRequisitionApprovalUniqueKey() {
 		return manpowerRequisitionApprovalUniqueKey;
