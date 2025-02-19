@@ -56,6 +56,12 @@ public class ManpowerRequisitionController {
 		return service.getInfoByTitle(department);
 	}
 
+	@GetMapping("/byStatus/{status}")
+	public ResponseInfo<List<ManpowerRequisition>> getByStatusMethod(@PathVariable String status)
+			throws InternalServerException, DataNotFoundException {
+		return service.getInfoByStatus(status);
+	}
+
 	@PutMapping("/status/update")
 	public ResponseInfo<Integer> updateStatusMethod(@RequestBody ManpowerRequisition manpowerRequisition,
 			@RequestAttribute(name = "roles", required = false) List<Roles> roles,

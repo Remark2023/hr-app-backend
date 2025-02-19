@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.remark_herlan.hr_app.model.ManpowerRequisition;
-import com.remark_herlan.hr_app.model.ManpowerRequisitionApprovalUniqueKey;
 
 import jakarta.transaction.Transactional;
 
@@ -24,6 +23,8 @@ import jakarta.transaction.Transactional;
 public interface ManpowerRequisitionDao extends JpaRepository<ManpowerRequisition, Long> {
 
 	List<ManpowerRequisition> findByDepartment(String department);
+
+	List<ManpowerRequisition> findByStatus(String status);
 
 	@Modifying
 	@Transactional

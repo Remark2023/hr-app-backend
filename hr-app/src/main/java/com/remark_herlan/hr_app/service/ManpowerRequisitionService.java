@@ -13,7 +13,6 @@ import com.remark_herlan.hr_app.exceptions.DataNotFoundException;
 import com.remark_herlan.hr_app.exceptions.InternalServerException;
 import com.remark_herlan.hr_app.exceptions.InvalidRequestException;
 import com.remark_herlan.hr_app.model.ManpowerRequisition;
-import com.remark_herlan.hr_app.model.ManpowerRequisitionApprovalUniqueKey;
 import com.remark_herlan.hr_app.model.ResponseInfo;
 
 /**
@@ -86,6 +85,30 @@ public class ManpowerRequisitionService {
 
 		try {
 			List<ManpowerRequisition> response = dao.findByDepartment(department);
+
+			if (response.isEmpty()) {
+				throw new DataNotFoundException("No data found!");
+			}
+
+			responseInfo.setStatusCode(HttpStatus.OK.value());
+			responseInfo.setMessage("Successfully fetched!");
+			responseInfo.setData(response);
+
+			return responseInfo;
+		} catch (DataNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new InternalServerException(e.getMessage());
+		}
+
+	}
+
+	public ResponseInfo<List<ManpowerRequisition>> getInfoByStatus(String status)
+			throws InternalServerException, DataNotFoundException {
+		ResponseInfo<List<ManpowerRequisition>> responseInfo = new ResponseInfo<>();
+
+		try {
+			List<ManpowerRequisition> response = dao.findByStatus(status);
 
 			if (response.isEmpty()) {
 				throw new DataNotFoundException("No data found!");

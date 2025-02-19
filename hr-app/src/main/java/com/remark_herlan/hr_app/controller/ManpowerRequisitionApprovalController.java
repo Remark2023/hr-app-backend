@@ -99,9 +99,9 @@ public class ManpowerRequisitionApprovalController {
 	}
 
 	@PostMapping("/add")
-	public ResponseInfo<String> postMethod(@RequestBody ManpowerRequisitionApproval manpowerRequisitionApproval)
-			throws InternalServerException {
-		return service.saveInfo(manpowerRequisitionApproval);
+	public ResponseInfo<String> postMethod(@RequestBody ManpowerRequisitionApproval manpowerRequisitionApproval,
+			@RequestAttribute("username") String username) throws InternalServerException {
+		return service.saveInfo(manpowerRequisitionApproval, username);
 	}
 
 }

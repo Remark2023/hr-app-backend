@@ -25,6 +25,7 @@ public class ManpowerRequisitionApproval {
 
 	private String status = "PENDING";
 	private String remarks;
+	private String createdBy;
 	private LocalDateTime approvalDate;
 
 	@CreationTimestamp
@@ -85,5 +86,13 @@ public class ManpowerRequisitionApproval {
 
 	public void setApprovalDate(LocalDateTime approvalDate) {
 		this.approvalDate = approvalDate;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 }

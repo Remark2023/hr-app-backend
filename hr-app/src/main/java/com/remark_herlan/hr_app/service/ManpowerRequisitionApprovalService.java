@@ -201,11 +201,12 @@ public class ManpowerRequisitionApprovalService {
 		}
 	}
 
-	public ResponseInfo<String> saveInfo(ManpowerRequisitionApproval manpowerRequisitionApproval)
+	public ResponseInfo<String> saveInfo(ManpowerRequisitionApproval manpowerRequisitionApproval, String username)
 			throws InternalServerException {
 		ResponseInfo<String> responseInfo = new ResponseInfo<>();
 
 		try {
+			manpowerRequisitionApproval.setCreatedBy(username);
 			dao.save(manpowerRequisitionApproval);
 
 			responseInfo.setStatusCode(HttpStatus.OK.value());
